@@ -1,0 +1,37 @@
+---
+resources:
+- name: code-repo
+  type: git
+  source:
+    uri: ((code-repo-uri))
+    branch: ((code-repo-branch))
+
+- name: ci-repo
+  type: git
+  source:
+    uri: ((ci-repo-uri))
+    branch: ((ci-repo-branch))
+    paths: ["ci"]
+
+
+- name: app-docker-image
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-hub-username))/((project-name))
+
+jobs:
+- name: build-and-publish
+  public: true
+  serial: true
+  plan:
+  - get: code-repo
+    trigger: true
+  - get: ci-repo
+  - task: build
+    file: ci-repo/ci/tasks/build.yml
+  - put: app-docker-image
+    params:
+      build: code-repo

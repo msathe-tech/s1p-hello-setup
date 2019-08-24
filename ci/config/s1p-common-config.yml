@@ -1,0 +1,4 @@
+ci-repo-uri: https://github.com/msathe-tech/s1p-hello-setup.git
+ci-repo-branch: master
+docker-hub-email: msathe@pivotal.io
+docker-hub-username: msathepivotal
