@@ -11,5 +11,8 @@ inputs:
 - name: code-repo
 - name: ci-repo
 
+outputs:
+  - name: code-repo
+
 run:
   path: ci-repo/ci/tasks/build.sh

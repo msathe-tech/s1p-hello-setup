@@ -11,7 +11,6 @@ resources:
   source:
     uri: ((ci-repo-uri))
     branch: ((ci-repo-branch))
-    paths: ["ci"]
 
 - name: app-docker-image
   type: docker-image
@@ -30,7 +29,7 @@ jobs:
     trigger: true
   - get: ci-repo
   - task: build
-    file: ci-repo/tasks/build.yml
+    file: ci-repo/ci/tasks/build.yml
   - put: app-docker-image
     params:
       build: code-repo
