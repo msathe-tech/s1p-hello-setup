@@ -12,4 +12,4 @@ inputs:
 - name: ci-repo
 
 run:
-  path: ci-repo/ci/tasks/build-and-release.sh
+  path: ci-repo/ci/tasks/build.sh
