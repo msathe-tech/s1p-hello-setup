@@ -10,3 +10,4 @@ git add .
 git config --global user.email "s1p-concourse@no.op"
 git config --global user.name "S1P Concourse"
 git commit -m "Updated baseline tag with SHA"
+
