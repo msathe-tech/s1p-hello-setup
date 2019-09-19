@@ -13,7 +13,7 @@ inputs:
   - name: ci-repo
 
 outputs:
-  - name: devops-repo
+  - name: devops-repo-modified
 
 run:
   path: ci-repo/ci/tasks/update-k8s-devops-yamls.sh
