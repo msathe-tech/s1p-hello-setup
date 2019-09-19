@@ -1,4 +1,4 @@
-##!/usr/bin/env bash
+#!/usr/bin/env bash
 #export ROOT_FOLDER
 #ROOT_FOLDER="$( pwd )"
 #
