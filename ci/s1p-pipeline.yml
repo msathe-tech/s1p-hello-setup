@@ -6,6 +6,13 @@ resources:
     uri: ((code-repo-uri))
     branch: ((code-repo-branch))
 
+- name: devops-repo
+  type: git
+  source:
+    uri: ((devops-repo-uri))
+    branch: ((devops-repo-branch))
+    private_key: ((github-private-key))
+
 - name: ci-repo
   type: git
   source:
@@ -33,3 +40,18 @@ jobs:
   - put: app-docker-image
     params:
       build: code-repo
+
+- name: update-k8s-devops-yamls
+  public: false
+  serial: true
+  plan:
+    # get sha from code repo and update image tag yml in devops repo
+    - get: code-repo
+    - get: devops-repo
+    - get: ci-repo
+      passed:
+      - build-and-publish
+      trigger: true
+    - task: update-k8s-devops-yamls
+      file: ci-repo/ci/tasks/update-k8s-devops-yamls.yml
+    - put: devops-repo

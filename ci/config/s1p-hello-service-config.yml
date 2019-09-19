@@ -1,3 +1,5 @@
 project-name: s1p-hello-service
 code-repo-uri: https://github.com/msathe-tech/s1p-hello-service.git
 code-repo-branch: master
+devops-repo-uri: https://github.com/msathe-tech/s1p-hello-service-devops-k8s.git
+devops-repo-branch: master
