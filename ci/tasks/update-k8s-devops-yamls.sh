@@ -12,6 +12,8 @@ git clone devops-repo devops-repo-modified
 cd devops-repo-modified
 cat spinnaker-prod-baseline-template.yaml | sed 's/BASELINE-SHA/64414b/g' > spinnaker-prod-baseline.yaml
 echo "" >> spinnaker-prod-baseline.yaml
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
 git add .
 git commit -m "Updated baseline tag with SHA"
 
