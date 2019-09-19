@@ -12,6 +12,9 @@ resources:
     uri: ((devops-repo-uri))
     branch: ((devops-repo-branch))
     private_key: ((github-private-key))
+#    git_config:
+#    - user.name: ((git-name))
+#    - user.email: ((git-email))
 
 - name: ci-repo
   type: git
@@ -19,39 +22,41 @@ resources:
     uri: ((ci-repo-uri))
     branch: ((ci-repo-branch))
 
-- name: app-docker-image
-  type: docker-image
-  source:
-    email: ((docker-hub-email))
-    username: ((docker-hub-username))
-    password: ((docker-hub-password))
-    repository: ((docker-hub-username))/((project-name))
+#- name: app-docker-image
+#  type: docker-image
+#  source:
+#    email: ((docker-hub-email))
+#    username: ((docker-hub-username))
+#    password: ((docker-hub-password))
+#    repository: ((docker-hub-username))/((project-name))
 
 jobs:
-- name: build-and-publish
-  public: true
-  serial: true
-  plan:
-  - get: code-repo
-    trigger: true
-  - get: ci-repo
-  - task: build
-    file: ci-repo/ci/tasks/build.yml
-  - put: app-docker-image
-    params:
-      build: code-repo
+#- name: build-and-publish
+#  public: true
+#  serial: true
+#  plan:
+#  - get: code-repo
+#    trigger: true
+#  - get: ci-repo
+#  - task: build
+#    file: ci-repo/ci/tasks/build.yml
+#  - put: app-docker-image
+#    params:
+#      build: code-repo
 
 - name: update-k8s-devops-yamls
-  public: false
+#  public: false
   serial: true
   plan:
     # get sha from code repo and update image tag yml in devops repo
     - get: code-repo
     - get: devops-repo
     - get: ci-repo
-      passed:
-      - build-and-publish
+#      passed:
+#      - build-and-publish
       trigger: true
     - task: update-k8s-devops-yamls
       file: ci-repo/ci/tasks/update-k8s-devops-yamls.yml
     - put: devops-repo
+      params:
+        repository: devops-repo-modified
