@@ -4,7 +4,7 @@ echo "Enter project name [s1p-hello-service]: "
 read project_name
 project_name=${project_name:-s1p-hello-service}
 
-echo "Do you want to repo if it exists (y/n) [y]: "
+echo "Do you want to delete the pipeline if it exists (y/n) [y]: "
 read delete
 
 if [ ${delete} == "y" ]; then
