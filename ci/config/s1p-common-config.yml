@@ -2,3 +2,7 @@ ci-repo-uri: https://github.com/msathe-tech/s1p-hello-setup.git
 ci-repo-branch: master
 docker-hub-email: msathe@pivotal.io
 docker-hub-username: msathepivotal
+
+# Add the following to creds/s1p-common-creds.yml
+# docker-hub-password
+# (github-private-key is set through fly-set-pipeline command)
