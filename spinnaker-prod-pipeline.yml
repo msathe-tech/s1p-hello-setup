@@ -1,0 +1,245 @@
+{
+  "expectedArtifacts": [
+    {
+      "defaultArtifact": {
+        "artifactAccount": "no-auth-http-account",
+        "customKind": true,
+        "id": "ef045da0-15db-46b2-81a0-0689008b6f78",
+        "reference": "https://raw.githubusercontent.com/msathe-tech/s1p-hello-service-devops-k8s/master/spinnaker-prod-canary.yaml",
+        "type": "http/file"
+      },
+      "displayName": "s1p-hello-service-spinnaker-prod-canary-yaml",
+      "id": "1311122d-6e6b-47c6-9c84-b4e5bcaf4335",
+      "matchArtifact": {
+        "artifactAccount": "no-auth-http-account",
+        "customKind": true,
+        "id": "85385505-67bf-4861-851f-5b8d0228e398",
+        "reference": "https://raw.githubusercontent.com/msathe-tech/s1p-hello-service-devops-k8s/master/spinnaker-prod-canary.yaml",
+        "type": "http/file"
+      },
+      "useDefaultArtifact": true,
+      "usePriorArtifact": false
+    },
+    {
+      "defaultArtifact": {
+        "artifactAccount": "no-auth-http-account",
+        "customKind": true,
+        "id": "544c98e9-3876-4f14-8749-1b4870eb7943",
+        "reference": "https://raw.githubusercontent.com/msathe-tech/s1p-hello-service-devops-k8s/master/spinnaker-prod-baseline.yaml",
+        "type": "http/file"
+      },
+      "displayName": "s1p-hello-service-spinnaker-prod-baseline-yaml",
+      "id": "37516ed7-0ebd-4a9a-b8b0-c2686b5372af",
+      "matchArtifact": {
+        "artifactAccount": "no-auth-http-account",
+        "customKind": true,
+        "id": "6519dda1-9058-467f-a0db-85a245b68b94",
+        "reference": "https://raw.githubusercontent.com/msathe-tech/s1p-hello-service-devops-k8s/master/spinnaker-prod-baseline.yaml",
+        "type": "http/file"
+      },
+      "useDefaultArtifact": true,
+      "usePriorArtifact": false
+    },
+    {
+      "defaultArtifact": {
+        "artifactAccount": "no-auth-http-account",
+        "customKind": true,
+        "id": "04cf23a6-78a8-493c-88ee-4930c74f0cf1",
+        "reference": "https://raw.githubusercontent.com/msathe-tech/s1p-hello-service-devops-k8s/master/spinnaker-prod.yaml",
+        "type": "http/file"
+      },
+      "displayName": "s1p-hello-service-spinnaker-prod-yaml",
+      "id": "40108506-c15b-4faf-a8c6-86f41cfd2c67",
+      "matchArtifact": {
+        "artifactAccount": "no-auth-http-account",
+        "customKind": true,
+        "id": "cb5d55c3-7a40-451e-88a0-4741c3548aea",
+        "reference": "https://raw.githubusercontent.com/msathe-tech/s1p-hello-service-devops-k8s/master/spinnaker-prod.yaml",
+        "type": "http/file"
+      },
+      "useDefaultArtifact": true,
+      "usePriorArtifact": false
+    }
+  ],
+  "keepWaitingPipelines": false,
+  "lastModifiedBy": "anonymous",
+  "limitConcurrent": true,
+  "parameterConfig": [],
+  "stages": [
+    {
+      "account": "default",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": false,
+      "failPipeline": true,
+      "manifestArtifactAccount": "no-auth-http-account",
+      "manifestArtifactId": "37516ed7-0ebd-4a9a-b8b0-c2686b5372af",
+      "moniker": {
+        "app": "s1phello"
+      },
+      "name": "Deploy Baseline",
+      "namespaceOverride": "s1p-prod",
+      "refId": "2",
+      "requiredArtifactIds": [],
+      "requiredArtifacts": [],
+      "requisiteStageRefIds": [],
+      "skipExpressionEvaluation": false,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false,
+          "services": []
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "account": "default",
+      "cloudProvider": "kubernetes",
+      "manifestArtifactAccount": "no-auth-http-account",
+      "manifestArtifactId": "1311122d-6e6b-47c6-9c84-b4e5bcaf4335",
+      "moniker": {
+        "app": "s1phello"
+      },
+      "name": "Deploy Canary",
+      "namespaceOverride": "s1p-prod",
+      "refId": "3",
+      "requisiteStageRefIds": [],
+      "skipExpressionEvaluation": false,
+      "source": "artifact",
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false,
+          "services": []
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "analysisType": "realTime",
+      "canaryConfig": {
+        "beginCanaryAnalysisAfterMins": "1",
+        "canaryAnalysisIntervalMins": "1",
+        "canaryConfigId": "91de1381-cc73-4eb9-b521-8bc3633b7cf6",
+        "lifetimeDuration": "PT0H5M",
+        "metricsAccountName": "prometheus",
+        "scopes": [
+          {
+            "controlLocation": "s1p-prod",
+            "controlScope": "${ deployedServerGroups[0].serverGroup }",
+            "experimentLocation": "s1p-prod",
+            "experimentScope": "${ deployedServerGroups[1].serverGroup }",
+            "extendedScopeParams": {},
+            "scopeName": "default"
+          }
+        ],
+        "scoreThresholds": {
+          "marginal": "75",
+          "pass": "95"
+        },
+        "storageAccountName": "my-google-account"
+      },
+      "name": "Canary Analysis",
+      "refId": "4",
+      "requisiteStageRefIds": [
+        "2",
+        "3"
+      ],
+      "type": "kayentaCanary"
+    },
+    {
+      "account": "default",
+      "cloudProvider": "kubernetes",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "failPipeline": false,
+      "isNew": true,
+      "manifestArtifact": null,
+      "manifestArtifactAccount": "no-auth-http-account",
+      "manifestArtifactId": "40108506-c15b-4faf-a8c6-86f41cfd2c67",
+      "moniker": {
+        "app": "s1phello"
+      },
+      "name": "Deploy To Prod",
+      "namespaceOverride": "s1p-prod",
+      "refId": "6",
+      "requisiteStageRefIds": [
+        "4"
+      ],
+      "skipExpressionEvaluation": false,
+      "source": "artifact",
+      "stageEnabled": {
+        "expression": "${#stage(\"Canary Analysis\")[\"status\"].toString() == \"SUCCEEDED\"}",
+        "type": "expression"
+      },
+      "trafficManagement": {
+        "enabled": false,
+        "options": {
+          "enableTraffic": false,
+          "namespace": null,
+          "services": [],
+          "strategy": null
+        }
+      },
+      "type": "deployManifest"
+    },
+    {
+      "account": "default",
+      "app": "s1phello",
+      "cloudProvider": "kubernetes",
+      "cluster": "deployment s1p-hello-service-canary",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "criteria": "newest",
+      "failPipeline": false,
+      "isNew": true,
+      "kind": "deployment",
+      "kinds": null,
+      "labelSelectors": null,
+      "location": "s1p-prod",
+      "manifestName": null,
+      "mode": "dynamic",
+      "name": "Delete Canary",
+      "options": {
+        "cascading": true,
+        "gracePeriodSeconds": null
+      },
+      "refId": "7",
+      "requisiteStageRefIds": [
+        "4"
+      ],
+      "type": "deleteManifest"
+    },
+    {
+      "account": "default",
+      "app": "s1phello",
+      "cloudProvider": "kubernetes",
+      "cluster": "deployment s1p-hello-service-baseline",
+      "completeOtherBranchesThenFail": false,
+      "continuePipeline": true,
+      "criteria": "newest",
+      "failPipeline": false,
+      "isNew": true,
+      "kind": "deployment",
+      "kinds": null,
+      "labelSelectors": null,
+      "location": "s1p-prod",
+      "manifestName": null,
+      "mode": "dynamic",
+      "name": "Delete Baseline",
+      "options": {
+        "cascading": true,
+        "gracePeriodSeconds": null
+      },
+      "refId": "8",
+      "requisiteStageRefIds": [
+        "4"
+      ],
+      "type": "deleteManifest"
+    }
+  ],
+  "triggers": [],
+  "updateTs": "1569368037018"
+}
