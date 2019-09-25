@@ -8,6 +8,7 @@ cd devops-repo-modified
 cat spinnaker-prod-baseline-template.yaml | sed 's/BASELINE-SHA/64414bd/g' > spinnaker-prod-baseline.yaml
 echo -e "\n#" >> spinnaker-prod-baseline.yaml
 date > bump
+git add .
 git config --global user.email "s1p-concourse@no.op"
 git config --global user.name "S1P Concourse"
 git commit -m "Updated baseline tag with SHA"
