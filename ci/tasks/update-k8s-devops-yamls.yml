@@ -8,7 +8,7 @@ image_resource:
     tag: latest
 
 inputs:
-#  - name: code-repo
+  - name: code-repo
   - name: devops-repo
   - name: ci-repo
 
