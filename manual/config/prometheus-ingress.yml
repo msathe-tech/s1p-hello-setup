@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: prometheus
+  namespace: monitoring
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/ssl-redirect: "false"
+    ingress.kubernetes.io/custom-response-headers: "Strict-Transport-Security: max-age=31536000; includeSubDomains"
+spec:
+  rules:
+  - host: prom.spin.beirut.cf-app.com
+    http:
+      paths:
+      - backend:
+          serviceName: prometheus-server
+          servicePort: 80
