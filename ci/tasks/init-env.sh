@@ -7,7 +7,7 @@ echo -e "\n\n########## Set up Cloud Pipelines environment ##########"
 
 # New for Concourse
 cd ci-cloud-pipelines
-tar xf pipelines.tar.gz --strip-components 1
+tar xf scripts.tar.gz --strip-components 1
 cd ..
 # End New for Concourse
 
