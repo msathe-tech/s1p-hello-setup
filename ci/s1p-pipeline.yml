@@ -20,12 +20,12 @@ resources:
     branch: ((maven-repo-branch))
     private_key: ((github-private-key))
 
-- name: devops-repo
-  type: git
-  source:
-    uri: ((devops-repo-uri))
-    branch: ((devops-repo-branch))
-    private_key: ((github-private-key))
+#- name: devops-repo
+#  type: git
+#  source:
+#    uri: ((devops-repo-uri))
+#    branch: ((devops-repo-branch))
+#    private_key: ((github-private-key))
 
 - name: ci-repo
   type: git

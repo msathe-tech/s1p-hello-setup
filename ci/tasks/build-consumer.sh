@@ -2,10 +2,6 @@
 
 set -o errexit
 
-### New for Concourse
-cd code-repo
-### End New for Concourse
-
 echo -e "\n\n########## Generate version for this build ##########"
 export PASSED_PIPELINE_VERSION=$(generateVersion)
 echo "Project Name [${PROJECT_NAME}]"

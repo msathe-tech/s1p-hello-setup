@@ -2,10 +2,6 @@
 
 set -o errexit
 
-### New for Concourse
-cd code-repo
-### End New for Concourse
-
 export TAG_PREFIX="prod/${PROJECT_NAME}/"
 
 echo -e "\n\n########## Get recent release tags ##########"

@@ -2,10 +2,6 @@
 
 set -o errexit
 
-### New for Concourse
-cd code-repo
-### End New for Concourse
-
 echo -e "\n\n########## Check out commit ##########"
 echo "Trigger build version [${TRIGGER_BUILD_VERSION}]"
 echo "Checking out commit [${TRIGGER_COMMIT_ID}]"

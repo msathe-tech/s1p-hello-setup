@@ -61,3 +61,12 @@ cd ..
 ### End New for Concourse
 
 echo -e "\n\n########## ---------- Cloud Pipelines and Extensions Environment Setup [END] ---------- ##########"
+
+### New for Concourse
+jobScript=$1
+
+echo -e "\n\n########## Run job script ##########"
+echo "Executing script: [${jobScript}]"
+cd code-repo
+source "${jobScript}"
+### End New for Concourse
