@@ -5,6 +5,12 @@ echo -e "\n\n########## ---------- Cloud Pipelines and Extensions Environment Se
 echo -e "\n\n########## Set up Cloud Pipelines environment ##########"
 #rm -rf .git/tools && mkdir -p .git/tools && cd "${WORKSPACE}"/.git/tools && curl -Lk "https://github.com/CloudPipelines/scripts/raw/master/dist/scripts.tar.gz" -o pipelines.tar.gz && tar xf pipelines.tar.gz --strip-components 1 && cd "${WORKSPACE}"
 
+# New for Concourse
+cd ci-cloud-pipelines
+tar xf pipelines.tar.gz --strip-components 1
+cd ..
+# End New for Concourse
+
 if [[ -z $(which ruby) ]]; then
     echo -e "\nRuby is not installed. Disabling ruby calls.\n"
     function ruby() { echo ""; }; export -f ruby
