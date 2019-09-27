@@ -19,4 +19,4 @@ outputs:
 run:
   path: ci-repo/ci/tasks/init-env.sh
   args:
-    - tasks/build-producer-with-db.sh
+    - ci-repo/ci/tasks/build-producer-with-db.sh

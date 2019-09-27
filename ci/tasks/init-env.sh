@@ -6,9 +6,11 @@ echo -e "\n\n########## Set up Cloud Pipelines environment ##########"
 #rm -rf .git/tools && mkdir -p .git/tools && cd "${WORKSPACE}"/.git/tools && curl -Lk "https://github.com/CloudPipelines/scripts/raw/master/dist/scripts.tar.gz" -o pipelines.tar.gz && tar xf pipelines.tar.gz --strip-components 1 && cd "${WORKSPACE}"
 
 # New for Concourse
-cd ci-cloud-pipelines
+export WORKSPACE=`pwd`
+
+cd "${WORKSPACE}"/ci-cloud-pipelines
 tar xf scripts.tar.gz --strip-components 1
-cd ..
+cd "${WORKSPACE}"
 # End New for Concourse
 
 if [[ -z $(which ruby) ]]; then
@@ -23,13 +25,16 @@ export PAAS_TYPE=k8s
 # End New for Concourse
 export BUILD_OPTIONS="-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
-
-source ci-cloud-pipelines/src/main/bash/pipeline.sh
+# New for Concourse
+cd "${WORKSPACE}"/code-repo
+# End New for Concourse
+cd "${WORKSPACE}"/ci-cloud-pipelines/src/main/bash/pipeline.sh
 
 
 echo -e "\n\n########## Set up Cloud Pipelines extended environment ##########"
+
 #export WORKSPACE_EXT="${WORKSPACE}/.git/tools-ext/custom"
-export WORKSPACE_EXT="ci-repo/ci/tasks"
+export WORKSPACE_EXT="${WORKSPACE}/ci-repo/ci/tasks"
 echo -e "\nExtensions can be accessed using WORKSPACE_EXT env variable"
 echo "WORKSPACE_EXT=${WORKSPACE_EXT}"
 export NUM_SOURCED_EXT_FILES=0
@@ -54,7 +59,7 @@ echo "NUM_SOURCED_EXT_FILES=${NUM_SOURCED_EXT_FILES}"
 
 echo -e "\n\n########## Set up common project environment ##########"
 ### New for Concourse
-cd code-repo
+cd "${WORKSPACE}"/code-repo
 ### End New for Concourse
 export PROJECT_GROUP="$(extractMavenProperty "project.groupId")"
 export PROJECT_NAME="$(extractMavenProperty "project.artifactId")"
@@ -65,7 +70,7 @@ echo "PROJECT_VERSION=[${PROJECT_VERSION}]"
 #export REPO_WITH_BINARIES_FOR_UPLOAD="${REPO_WITH_BINARIES_FOR_UPLOAD}/${PROJECT_NAME}"
 export STUBRUNNER_SNAPSHOT_CHECK_SKIP=true
 ### New for Concourse
-cd ..
+cd "${WORKSPACE}"
 ### End New for Concourse
 
 echo -e "\n\n########## ---------- Cloud Pipelines and Extensions Environment Setup [END] ---------- ##########"
@@ -75,6 +80,6 @@ jobScript=$1
 
 echo -e "\n\n########## Run job script ##########"
 echo "Executing script: [${jobScript}]"
-cd code-repo
-source "${jobScript}"
+cd "${WORKSPACE}"/code-repo
+source "${WORKSPACE}/${jobScript}"
 ### End New for Concourse
