@@ -1,8 +1,12 @@
 ci-repo-uri: https://github.com/msathe-tech/s1p-hello-setup.git
-ci-repo-branch: master
+ci-repo-branch: cloud-pipelines
 docker-hub-email: msathe@pivotal.io
 docker-hub-username: msathepivotal
 
 # Add the following to creds/s1p-common-creds.yml
 # docker-hub-password
 # (github-private-key is set through fly-set-pipeline command)
+
+# Change this to common artifacts-only repo, master branch
+maven-repo-uri: https://github.com/msathe-tech/s1p-hello-service.git
+maven-repo-branch: repository

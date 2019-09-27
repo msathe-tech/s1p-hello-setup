@@ -1,10 +1,24 @@
 ---
+resource_types:
+  - name: file-url
+    type: docker-image
+    source:
+      repository: pivotalservices/concourse-curl-resource
+      tag: latest
+
 resources:
 - name: code-repo
   type: git
   source:
     uri: ((code-repo-uri))
     branch: ((code-repo-branch))
+
+- name: maven-repo
+  type: git
+  source:
+    uri: ((maven-repo-uri))
+    branch: ((maven-repo-branch))
+    private_key: ((github-private-key))
 
 - name: devops-repo
   type: git
@@ -19,6 +33,12 @@ resources:
     uri: ((ci-repo-uri))
     branch: ((ci-repo-branch))
 
+- name: ci-cloud-pipelines
+    type: file-url
+    source:
+      url: https://github.com/CloudPipelines/scripts/raw/master/dist/scripts.tar.gz
+      filename: scripts.tar.gz
+
 - name: app-docker-image
   type: docker-image
   source:
@@ -28,31 +48,33 @@ resources:
     repository: ((docker-hub-username))/((project-name))
 
 jobs:
-- name: build-and-publish
+- name: test-build-publish
   public: true
   serial: true
   plan:
   - get: code-repo
     trigger: true
   - get: ci-repo
+  - get: ci-cloud-pipelines
+  - get: maven-repo
   - task: build
-    file: ci-repo/ci/tasks/build.yml
+    file: ci-repo/ci/tasks/test-build-publish.yml
   - put: app-docker-image
     params:
       build: code-repo
 
-- name: update-k8s-devops-yamls
-#  public: false
-  serial: true
-  plan:
-    # get sha from code repo and update image tag yml in devops repo
-    - get: code-repo
-    - get: devops-repo
-    - get: ci-repo
-      passed:
-      - build-and-publish
-      trigger: true
-    - task: update-k8s-devops-yamls
-      file: ci-repo/ci/tasks/update-k8s-devops-yamls.yml
-    - put: devops-repo
-      params: {repository: devops-repo-modified}
+#- name: update-k8s-devops-yamls
+##  public: false
+#  serial: true
+#  plan:
+#    # get sha from code repo and update image tag yml in devops repo
+#    - get: code-repo
+#    - get: devops-repo
+#    - get: ci-repo
+#      passed:
+#      - build-and-publish
+#      trigger: true
+#    - task: update-k8s-devops-yamls
+#      file: ci-repo/ci/tasks/update-k8s-devops-yamls.yml
+#    - put: devops-repo
+#      params: {repository: devops-repo-modified}

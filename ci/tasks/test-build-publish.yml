@@ -1,0 +1,20 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: cloudpipelines/pipeline-base
+    tag: latest
+
+inputs:
+- name: code-repo
+- name: ci-repo
+- name: ci-cloud-pipelines
+- name: maven-repo
+
+outputs:
+  - name: code-repo
+
+run:
+  path: ci-repo/ci/tasks/init-env.sh; ci-repo/ci/tasks/build-producer-with-db.sh
