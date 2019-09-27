@@ -9,7 +9,6 @@ echo -e "\n\n########## Set up Cloud Pipelines environment ##########"
 cd ci-cloud-pipelines
 tar xf scripts.tar.gz --strip-components 1
 cd ..
-export PAAS_TYPE="$( toLowerCase "${PAAS_TYPE:-k8s}" )"
 # End New for Concourse
 
 if [[ -z $(which ruby) ]]; then
@@ -18,8 +17,10 @@ if [[ -z $(which ruby) ]]; then
 fi
 
 export ENVIRONMENT=BUILD
-export CI=Jenkins
+# New for Concourse
 export CI=Concourse
+export PAAS_TYPE=k8s
+# End New for Concourse
 export BUILD_OPTIONS="-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
 
