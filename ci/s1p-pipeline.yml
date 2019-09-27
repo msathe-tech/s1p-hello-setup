@@ -34,10 +34,10 @@ resources:
     branch: ((ci-repo-branch))
 
 - name: ci-cloud-pipelines
-    type: file-url
-    source:
-      url: https://github.com/CloudPipelines/scripts/raw/master/dist/scripts.tar.gz
-      filename: scripts.tar.gz
+  type: file-url
+  source:
+    url: ((ci-cloud-pipelines-file))
+    filename: ((ci-cloud-pipelines-file-name))
 
 - name: app-docker-image
   type: docker-image

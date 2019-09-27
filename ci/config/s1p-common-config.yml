@@ -7,6 +7,9 @@ docker-hub-username: msathepivotal
 # docker-hub-password
 # (github-private-key is set through fly-set-pipeline command)
 
+ci-cloud-pipelines-file: https://github.com/CloudPipelines/scripts/raw/master/dist/scripts.tar.gz
+ci-cloud-pipelines-file-name: scripts.tar.gz
+
 # Change this to common artifacts-only repo, master branch
 maven-repo-uri: https://github.com/msathe-tech/s1p-hello-service.git
 maven-repo-branch: repository
