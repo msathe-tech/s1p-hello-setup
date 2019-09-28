@@ -39,13 +39,13 @@ resources:
     url: ((ci-cloud-pipelines-file))
     filename: ((ci-cloud-pipelines-file-name))
 
-- name: app-docker-image
-  type: docker-image
-  source:
-    email: ((docker-hub-email))
-    username: ((docker-hub-username))
-    password: ((docker-hub-password))
-    repository: ((docker-hub-username))/((project-name))
+#- name: app-docker-image
+#  type: docker-image
+#  source:
+#    email: ((docker-hub-email))
+#    username: ((docker-hub-username))
+#    password: ((docker-hub-password))
+#    repository: ((docker-hub-username))/((project-name))
 
 jobs:
 - name: test-build-publish
@@ -60,9 +60,10 @@ jobs:
   - task: build
     file: ci-repo/ci/tasks/test-build-publish.yml
   - put: maven-repo
-  - put: app-docker-image
-    params:
-      build: code-repo
+    params: {repository: maven-repo}
+#  - put: app-docker-image
+#    params:
+#      build: code-repo
 
 #- name: update-k8s-devops-yamls
 ##  public: false

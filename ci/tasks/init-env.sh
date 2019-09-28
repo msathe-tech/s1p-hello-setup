@@ -45,4 +45,6 @@ echo -e "\n\n########## Run job script ##########"
 jobScript=$1
 echo "Executing script: [${jobScript}]"
 cd "${WORKSPACE}/code-repo"
+export GIT_URL=`"${GIT_BIN}" config --get remote.origin.url`
+export GIT_COMMIT="$(${GIT_BIN} rev-parse HEAD)"
 source "${WORKSPACE}"/"${jobScript}"
