@@ -59,6 +59,7 @@ jobs:
   - get: maven-repo
   - task: build
     file: ci-repo/ci/tasks/test-build-publish.yml
+  - put: maven-repo
   - put: app-docker-image
     params:
       build: code-repo
