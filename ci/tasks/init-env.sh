@@ -18,7 +18,7 @@ cd "${WORKSPACE}/code-repo"
 source "${WORKSPACE}"/ci-cloud-pipelines/src/main/bash/pipeline.sh
 
 echo -e "\n\n########## Set up Cloud Pipelines extensions ##########"
-export WORKSPACE_EXT="${WORKSPACE}/ci-repo/ci/tasks"
+export WORKSPACE_EXT="${WORKSPACE}/${TASKS}"
 echo "WORKSPACE_EXT=${WORKSPACE_EXT}"
 export NUM_SOURCED_EXT_FILES=0
 source "${WORKSPACE_EXT}"/pipeline.sh
@@ -34,17 +34,10 @@ echo "PROJECT_GROUP=[${PROJECT_GROUP}]"
 echo "PROJECT_NAME=[${PROJECT_NAME}]"
 echo "PROJECT_VERSION=[${PROJECT_VERSION}]"
 export STUBRUNNER_SNAPSHOT_CHECK_SKIP=true
-cd "${WORKSPACE}"
 
 "${GIT_BIN}" config --global user.email "s1p-concourse@no.op"
 "${GIT_BIN}" config --global user.name "S1P Concourse"
 
-echo -e "\n\n########## ---------- Cloud Pipelines and Extensions Environment Setup [END] ---------- ##########"
+cd "${WORKSPACE}"
 
-echo -e "\n\n########## Run job script ##########"
-jobScript=$1
-echo "Executing script: [${jobScript}]"
-cd "${WORKSPACE}/code-repo"
-export GIT_URL=`"${GIT_BIN}" config --get remote.origin.url`
-export GIT_COMMIT="$(${GIT_BIN} rev-parse HEAD)"
-source "${WORKSPACE}"/"${jobScript}"
+echo -e "\n\n########## ---------- Cloud Pipelines and Extensions Environment Setup [END] ---------- ##########"

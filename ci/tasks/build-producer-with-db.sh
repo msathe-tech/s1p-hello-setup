@@ -2,6 +2,13 @@
 
 set -o errexit
 
+source "${WORKSPACE_EXT}"/init-env.sh
+
+echo -e "\n\n########## Run job script ##########"
+cd "${WORKSPACE}/code-repo"
+export GIT_URL=`"${GIT_BIN}" config --get remote.origin.url`
+export GIT_COMMIT="$(${GIT_BIN} rev-parse HEAD)"
+
 echo -e "\n\n########## Generate version for this build ##########"
 echo "Project Name [${PROJECT_NAME}]"
 echo "Project Version [${PROJECT_VERSION}]"

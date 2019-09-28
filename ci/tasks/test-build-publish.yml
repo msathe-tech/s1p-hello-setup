@@ -17,12 +17,9 @@ outputs:
   - name: code-repo
   - name: maven-repo
 
-#params:
-#  PAAS_TYPE: k8s
-#  CI: Concourse
+params:
+  TASKS: ci-repo/ci/tasks
 
 run:
-  path: ci-repo/ci/tasks/init-env.sh
-  args:
-    - ci-repo/ci/tasks/build-producer-with-db.sh
+  path: ci-repo/ci/tasks/build-producer-with-db.sh
 
