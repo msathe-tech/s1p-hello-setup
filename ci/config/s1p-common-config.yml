@@ -11,5 +11,5 @@ ci-cloud-pipelines-file: https://github.com/CloudPipelines/scripts/raw/master/di
 ci-cloud-pipelines-file-name: scripts.tar.gz
 
 # Change this to common artifacts-only repo, master branch
-maven-repo-uri: https://github.com/msathe-tech/s1p-hello-service.git
-maven-repo-branch: repository
+maven-repo-uri: git@github.com:ciberkleid/artifacts.git
+maven-repo-branch: master
