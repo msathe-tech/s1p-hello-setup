@@ -11,6 +11,7 @@ cd "${WORKSPACE}"
 
 export ENVIRONMENT=BUILD
 export CI=Concourse
+echo "Got PAAS_TYPE: ${PAAS_TYPE}"
 export PAAS_TYPE=k8s
 export BUILD_OPTIONS="-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 

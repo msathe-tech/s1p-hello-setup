@@ -80,7 +80,8 @@ echo "Generated Version [${PASSED_PIPELINE_VERSION}]"
 
 echo -e "\n\n########## Build and upload ##########"
 #"${GIT_BIN}" checkout "${GIT_COMMIT}"
-build
+#build
+deployLocal
 
 #echo -e "\n\n########## Publish uploaded files ##########"
 #api=${REPO_WITH_BINARIES_FOR_UPLOAD/maven/content}
