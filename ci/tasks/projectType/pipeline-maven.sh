@@ -38,7 +38,7 @@ function build() {
 		# shellcheck disable=SC2086
 		"${MAVENW_BIN}" clean package || (printTestResults && return 1)
 		cd "$WORKSPACE/maven-repo"
-    "${MAVENW_BIN}" install:install-file -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$VERSION -Dfile=$WORKSPACE/$REPO_NAME/target/$ARTIFACT_ID-$VERSION-stubs.jar -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=. -DcreateChecksum=true -Dclassifier=stubs
+    "${MAVENW_BIN}" install:install-file -DgroupId="${PROJECT_GROUP}" -DartifactId="${PROJECT_NAME}" -Dversion="${pipelineVersion}" -Dfile="${WORKSPACE}/code-repo/target/${PROJECT_NAME}-${pipelineVersion}-stubs.jar" -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=. -DcreateChecksum=true -Dclassifier=stubs
     "${GIT_BIN}" add .
     "${GIT_BIN}" commit -m "stubs for version $VERSION"
     cd cd "$WORKSPACE/code-repo"
