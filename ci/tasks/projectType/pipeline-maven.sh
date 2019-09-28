@@ -24,8 +24,6 @@ function runDefaultTests() {
 	fi
 } # }}}
 
-export -f runDefaultTests
-
 # FUNCTION: deployLocal {{{
 # Will deploy main and stubs jars locally. Upload to a maven-repo must be done separately
 function deployLocal() {
@@ -50,3 +48,8 @@ function deployLocal() {
 #  git commit -m "stubs for version $VERSION"
 #  git push
 } # }}}
+
+export -f runDefaultTests
+export -f deployLocal
+
+

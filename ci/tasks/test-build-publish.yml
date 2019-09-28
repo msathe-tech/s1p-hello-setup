@@ -16,8 +16,9 @@ inputs:
 outputs:
   - name: code-repo
 
-params:
-  PAAS_TYPE: k8s
+#params:
+#  PAAS_TYPE: k8s
+#  CI: Concourse
 
 run:
   path: ci-repo/ci/tasks/init-env.sh
