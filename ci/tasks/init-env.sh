@@ -36,6 +36,9 @@ echo "PROJECT_VERSION=[${PROJECT_VERSION}]"
 export STUBRUNNER_SNAPSHOT_CHECK_SKIP=true
 cd "${WORKSPACE}"
 
+"${GIT_BIN}" config --global user.email "s1p-concourse@no.op"
+"${GIT_BIN}" config --global user.name "S1P Concourse"
+
 echo -e "\n\n########## ---------- Cloud Pipelines and Extensions Environment Setup [END] ---------- ##########"
 
 echo -e "\n\n########## Run job script ##########"
