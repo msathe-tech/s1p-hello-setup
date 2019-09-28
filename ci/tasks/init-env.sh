@@ -41,3 +41,9 @@ export STUBRUNNER_SNAPSHOT_CHECK_SKIP=true
 cd "${WORKSPACE}"
 
 echo -e "\n\n########## ---------- Cloud Pipelines and Extensions Environment Setup [END] ---------- ##########"
+
+echo -e "\n\n########## Run job script ##########"
+jobScript=$1
+echo "Executing script: [${jobScript}]"
+cd "${WORKSPACE}/code-repo"
+source "${WORKSPACE}"/"${jobScript}"

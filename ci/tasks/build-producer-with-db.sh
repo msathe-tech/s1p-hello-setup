@@ -2,8 +2,6 @@
 
 set -o errexit
 
-source "${WORKSPACE_EXT}"/init-env.sh
-
 echo -e "\n\n########## Run job script ##########"
 cd "${WORKSPACE}/code-repo"
 export GIT_URL=`"${GIT_BIN}" config --get remote.origin.url`
