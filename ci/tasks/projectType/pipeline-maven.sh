@@ -41,7 +41,7 @@ function build() {
     "${MAVENW_BIN}" install:install-file -DgroupId="${PROJECT_GROUP}" -DartifactId="${PROJECT_NAME}" -Dversion="${pipelineVersion}" -Dfile="${WORKSPACE}/code-repo/target/${PROJECT_NAME}-${pipelineVersion}-stubs.jar" -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=. -DcreateChecksum=true -Dclassifier=stubs
     "${GIT_BIN}" add .
     "${GIT_BIN}" commit -m "stubs for version $VERSION"
-    cd cd "$WORKSPACE/code-repo"
+    cd "$WORKSPACE/code-repo"
   # git push is done through Concourse resource
 	else
 		# shellcheck disable=SC2086
