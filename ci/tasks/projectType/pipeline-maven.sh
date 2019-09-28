@@ -24,32 +24,33 @@ function runDefaultTests() {
 	fi
 } # }}}
 
-# FUNCTION: deployLocal {{{
-# Will deploy main and stubs jars locally. Upload to a maven-repo must be done separately
-function deployLocal() {
-  echo ${WORKSPACE}
-  echo ${GIT_REPO}
-  echo ${REPO_NAME}
-  echo ${GROUP_ID}
-  echo ${ARTIFACT_ID}
-  echo ${VERSION}
-
-#  cd $WORKSPACE
-#  git clone $GIT_REPO $REPO_NAME
-#  cd $REPO_NAME
-#  ./mvnw clean package
-#
-#  cd $WORKSPACE
-#  git clone $GIT_REPO $REPO_NAME-repository
-#  cd $REPO_NAME-repository
-#  git checkout repository
-#  ./mvnw install:install-file -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$VERSION -Dfile=$WORKSPACE/$REPO_NAME/target/$ARTIFACT_ID-$VERSION-stubs.jar -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=. -DcreateChecksum=true -Dclassifier=stubs
-#  git add .
-#  git commit -m "stubs for version $VERSION"
-#  git push
+# FUNCTION: build {{{
+# Maven implementation of build. Sets version, passes build options and distribution management properties.
+# Uses [PIPELINE_VERSION], [PASSED_PIPELINE_VERSION] and [M2_SETTINGS...], [REPO_WITH_BINARIES...] related env vars
+function build() {
+  	echo "Running build (extensions)."
+	local pipelineVersion="${PASSED_PIPELINE_VERSION:-${PIPELINE_VERSION:-}}"
+	# Required by settings.xml
+	#BUILD_OPTIONS="${BUILD_OPTIONS} -DM2_SETTINGS_REPO_ID=${M2_SETTINGS_REPO_ID} -DM2_SETTINGS_REPO_USERNAME=${M2_SETTINGS_REPO_USERNAME} -DM2_SETTINGS_REPO_PASSWORD=${M2_SETTINGS_REPO_PASSWORD}"
+	# shellcheck disable=SC2086
+	"${MAVENW_BIN}" versions:set -DnewVersion="${pipelineVersion}" -DprocessAllModules ${BUILD_OPTIONS} || (echo "Build failed!!!" && return 1)
+	if [[ "${CI}" == "CONCOURSE" ]]; then
+		# shellcheck disable=SC2086
+		"${MAVENW_BIN}" clean package || (printTestResults && return 1)
+		cd "$WORKSPACE/maven-repo"
+    "${MAVENW_BIN}" install:install-file -DgroupId=$GROUP_ID -DartifactId=$ARTIFACT_ID -Dversion=$VERSION -Dfile=$WORKSPACE/$REPO_NAME/target/$ARTIFACT_ID-$VERSION-stubs.jar -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=. -DcreateChecksum=true -Dclassifier=stubs
+    "${GIT_BIN}" add .
+    "${GIT_BIN}" commit -m "stubs for version $VERSION"
+    cd cd "$WORKSPACE/code-repo"
+  # git push is done through Concourse resource
+	else
+		# shellcheck disable=SC2086
+		"${MAVENW_BIN}" clean verify deploy -Ddistribution.management.release.id="${M2_SETTINGS_REPO_ID}" -Ddistribution.management.release.url="${REPO_WITH_BINARIES_FOR_UPLOAD}" -Drepo.with.binaries="${REPO_WITH_BINARIES}" ${BUILD_OPTIONS}
+	fi
 } # }}}
 
 export -f runDefaultTests
-export -f deployLocal
+export -f build
+
 
 
