@@ -18,7 +18,7 @@ cd "${WORKSPACE}/code-repo"
 source "${WORKSPACE}"/ci-cloud-pipelines/src/main/bash/pipeline.sh
 
 echo -e "\n\n########## Set up Cloud Pipelines extensions ##########"
-export WORKSPACE_EXT="${WORKSPACE}/${TASKS}"
+export WORKSPACE_EXT="${WORKSPACE}/ci-repo/ci/tasks"
 echo "WORKSPACE_EXT=${WORKSPACE_EXT}"
 export NUM_SOURCED_EXT_FILES=0
 source "${WORKSPACE_EXT}"/pipeline.sh
