@@ -10,8 +10,8 @@ export GIT_COMMIT="$(${GIT_BIN} rev-parse HEAD)"
 echo -e "\n\n########## Generate version for this build ##########"
 echo "Project Name [${PROJECT_NAME}]"
 echo "Project Version [${PROJECT_VERSION}]"
-export PASSED_PIPELINE_VERSION=$(generateVersion)
-echo "Generated Version [${PASSED_PIPELINE_VERSION}]"
+export GENERATED_VERSION=$(fnGenerateVersion)
+echo "Generated Version [${GENERATED_VERSION}]"
 
 #echo -e "\n\n########## Get release tags ##########"
 #if $SKIP_BACK_COMPATIBILITY_CHECKS ; then
@@ -36,21 +36,25 @@ echo "Generated Version [${PASSED_PIPELINE_VERSION}]"
 #  echo "${RELEASE_TAGS}"
 #fi
 
-#echo -e "\n\n########## Test API back compatibility ##########"
-#if $SKIP_BACK_COMPATIBILITY_CHECKS ; then
-#    echo "Skipping [SKIP_BACK_COMPATIBILITY_CHECKS=${SKIP_BACK_COMPATIBILITY_CHECKS}]"
-#elif [[ -z "${RELEASE_TAGS}" ]]; then
-#    echo "Skipping [RELEASE_TAGS=${RELEASE_TAGS}]"
-#else
-#    IFS=","
-#    releaseTagsArray=($RELEASE_TAGS)
-#    for ((i=0; i<${#releaseTagsArray[@]}; ++i)); do
-#        version=${releaseTagsArray[$i]#"prod/${PROJECT_NAME}/"}
-#        echo -e "\n\n##### Testing with API client from version [${version}]\n\n\n";
-#        executeApiCompatibilityCheck "${version}"
-#    done
-#    unset IFS
-#fi
+# Expecting RELEASE_TAGS to contain a comman-delimited list of coordinates. For example:
+# io.pivotal:greeting-ui:1.0.0-20190510.205150Z.0638cc,io.pivotal:greeting-ui:1.0.0-20190428.172355Z.bcd72b4
+RELEASE_TAGS=spring.k8s:s1p-hello-service:0.0.1-SNAPSHOT-20190928.135943Z.bd26e35
+
+echo -e "\n\n########## Test API back compatibility ##########"
+if $SKIP_BACK_COMPATIBILITY_CHECKS ; then
+    echo "Skipping [SKIP_BACK_COMPATIBILITY_CHECKS=${SKIP_BACK_COMPATIBILITY_CHECKS}]"
+elif [[ -z "${RELEASE_TAGS}" ]]; then
+    echo "Skipping [RELEASE_TAGS=${RELEASE_TAGS}]"
+else
+    IFS=","
+    releaseTagsArray=($RELEASE_TAGS)
+    for ((i=0; i<${#releaseTagsArray[@]}; ++i)); do
+        version=${releaseTagsArray[$i]#"prod/${PROJECT_NAME}/"}
+        echo -e "\n\n##### Testing with API client from version [${version}]\n\n\n";
+        fnExecuteApiCompatibilityCheck "${version}"
+    done
+    unset IFS
+fi
 
 #echo -e "\n\n########## Run database schema back compatibility tests ##########"
 #if $SKIP_BACK_COMPATIBILITY_CHECKS ; then
@@ -75,8 +79,8 @@ echo "Generated Version [${PASSED_PIPELINE_VERSION}]"
 #        rm -r src/main/resources/db/migration
 #        mkdir -p src/main/resources/db
 #        cp -r .git/db-${GIT_COMMIT}/migration src/main/resources/db/migration
-#        # runDefaultTests will use BUILD_OPTIONS to use new migration scripts (saved to .git folder above)
-#        runDefaultTests
+#        # fnRunDefaultTests will use BUILD_OPTIONS to use new migration scripts (saved to .git folder above)
+#        fnRunDefaultTests
 #    done
 #    "${GIT_BIN}" reset --hard "${GIT_COMMIT}"
 #    "${GIT_BIN}" clean -f -d
@@ -85,17 +89,17 @@ echo "Generated Version [${PASSED_PIPELINE_VERSION}]"
 
 echo -e "\n\n########## Build and upload ##########"
 #"${GIT_BIN}" checkout "${GIT_COMMIT}"
-build
+fnBuild
 
 #echo -e "\n\n########## Publish uploaded files ##########"
 #api=${REPO_WITH_BINARIES_FOR_UPLOAD/maven/content}
-#curl -X POST ${api}/${PASSED_PIPELINE_VERSION}/publish
+#curl -X POST ${api}/${GENERATED_VERSION}/publish
 
 echo -e "\n\n########## Build info summary (to archive) ##########"
 echo "source=${GIT_URL}" > ci-build.properties
 echo "project_name=${PROJECT_NAME}" >> ci-build.properties
 echo "commit_id=${GIT_COMMIT}" >> ci-build.properties
-echo "build_version=${PASSED_PIPELINE_VERSION}" >> ci-build.properties
+echo "build_version=${GENERATED_VERSION}" >> ci-build.properties
 echo "skip_back_compat_checks=${SKIP_BACK_COMPATIBILITY_CHECKS}" >> ci-build.properties
 echo "api_back_compat=${RELEASE_TAGS}" >> ci-build.properties
 echo "db_back_compat=${RELEASE_TAGS}" >> ci-build.properties

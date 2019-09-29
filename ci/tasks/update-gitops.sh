@@ -1,9 +1,19 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-echo "Get latest code-repo sha"
-cd code-repo
-sha=`git rev-parse --short HEAD`
-cd ..
+set -o errexit
+
+echo -e "\n\n########## Run job script ##########"
+cd "${WORKSPACE}/code-repo"
+export GIT_URL=`"${GIT_BIN}" config --get remote.origin.url`
+export GIT_COMMIT="$(${GIT_BIN} rev-parse HEAD)"
+
+echo -e "\n\n########## Generate version for this build ##########"
+echo "Project Name [${PROJECT_NAME}]"
+echo "Project Version [${PROJECT_VERSION}]"
+export GENERATED_VERSION=$(fnGenerateVersion)
+echo "Generated Version [${GENERATED_VERSION}]"
+
+cd "${WORKSPACE}"
 echo "Cloning devops-repo"
 git clone devops-repo devops-repo-modified
 cd devops-repo-modified

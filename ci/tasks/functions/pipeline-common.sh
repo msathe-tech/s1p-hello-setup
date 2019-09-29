@@ -1,22 +1,16 @@
-#!/bin/bash
+#!/bin/bash +x
 
 set -o errexit
 set -o errtrace
 set -o pipefail
 
-# synopsis {{{
-# Contains customized common pipeline functions
-# }}}
-
-NUM_SOURCED_EXT_FILES=$((NUM_SOURCED_EXT_FILES + 1))
-
-# FUNCTION: generateVersion {{{
+# FUNCTION: fnGenerateVersion {{{
 # Generates version
 # Returns version number.
-function generateVersion() {
-    local version="${PASSED_PIPELINE_VERSION:-${PIPELINE_VERSION:-}}"
+function fnGenerateVersion() {
+  local version="${GENERATED_VERSION:-${PIPELINE_VERSION:-}}"
 	if [[ ! -z "${version}" ]]; then
-		echo "${version}"
+	  echo "${version}"
 	else
 	  local version="$(extractMavenProperty "project.version")"
 		local commitTime="$(${GIT_BIN} show --no-patch --no-notes --pretty='%ct')"
@@ -65,6 +59,6 @@ function latestProdTagsFromGit() {
     echo "${latestProdTags[@]}"
 } # }}}
 
-export -f generateVersion
+export -f fnGenerateVersion
 export -f findLatestProdTags
 export -f latestProdTagsFromGit

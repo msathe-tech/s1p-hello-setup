@@ -3,9 +3,9 @@
 set -o errexit
 
 echo -e "\n\n########## Generate version for this build ##########"
-export PASSED_PIPELINE_VERSION=$(generateVersion)
+export GENERATED_VERSION=$(fnGenerateVersion)
 echo "Project Name [${PROJECT_NAME}]"
-echo "Version [${PASSED_PIPELINE_VERSION}]"
+echo "Version [${GENERATED_VERSION}]"
 
 #echo -e "\n\n########## Get stub coordinates ##########"
 #if [[ ! -z "${STUBS}" ]]; then
@@ -41,11 +41,11 @@ echo "Version [${PASSED_PIPELINE_VERSION}]"
 #    export STUBS="${stubrunnerIDsArray[$i]}"
 #    #export BUILD_OPTIONS="${savedBuildOptions} -Dstubrunner.ids=${stubrunnerIDsArray[$i]}"
 #    if (( $i < ${#stubrunnerIDsArray[@]}-1 )); then
-#        runDefaultTests
+#        fnRunDefaultTests
 #    else
 #        echo -e "\n\n########## Build and upload ##########"
 #        echo -e "\nBuild will test with stubs[$i]: ${stubrunnerIDsArray[$i]}\n";
-#        build
+#        fnBuild
 #    fi
 #done
 
@@ -55,13 +55,13 @@ unset IFS
 
 echo -e "\n\n########## Publish uploaded files ##########"
 #api=${REPO_WITH_BINARIES_FOR_UPLOAD/maven/content}
-curl -X POST ${api}/${PASSED_PIPELINE_VERSION}/publish
+curl -X POST ${api}/${GENERATED_VERSION}/publish
 
 echo -e "\n\n########## Build info summary (to archive) ##########"
 echo "source=${GIT_URL}" > ci-build.properties
 echo "project_name=${PROJECT_NAME}" >> ci-build.properties
 echo "commit_id=${GIT_COMMIT}" >> ci-build.properties
-echo "build_version=${PASSED_PIPELINE_VERSION}" >> ci-build.properties
+echo "build_version=${GENERATED_VERSION}" >> ci-build.properties
 echo "api_compat=${STUBS}" >> ci-build.properties
 
 cat ci-build.properties

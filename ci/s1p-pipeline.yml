@@ -1,11 +1,5 @@
 ---
 resource_types:
-  - name: file-url
-    type: docker-image
-    source:
-      repository: pivotalservices/concourse-curl-resource
-      tag: latest
-
 resources:
 - name: code-repo
   type: git
@@ -33,12 +27,6 @@ resources:
     uri: ((ci-repo-uri))
     branch: ((ci-repo-branch))
 
-- name: ci-cloud-pipelines
-  type: file-url
-  source:
-    url: ((ci-cloud-pipelines-file))
-    filename: ((ci-cloud-pipelines-file-name))
-
 #- name: app-docker-image
 #  type: docker-image
 #  source:
@@ -48,24 +36,23 @@ resources:
 #    repository: ((docker-hub-username))/((project-name))
 
 jobs:
-- name: test-build-publish
+- name: test
   public: true
   serial: true
   plan:
   - get: code-repo
     trigger: true
   - get: ci-repo
-  - get: ci-cloud-pipelines
   - get: maven-repo
-  - task: build
-    file: ci-repo/ci/tasks/test-build-publish.yml
+  - task: test
+    file: ci-repo/ci/tasks/test-producer.yml
   - put: maven-repo
     params: {repository: maven-repo}
 #  - put: app-docker-image
 #    params:
 #      build: code-repo
 
-#- name: update-k8s-devops-yamls
+#- name: update-gitops
 ##  public: false
 #  serial: true
 #  plan:
@@ -76,7 +63,7 @@ jobs:
 #      passed:
 #      - build-and-publish
 #      trigger: true
-#    - task: update-k8s-devops-yamls
-#      file: ci-repo/ci/tasks/update-k8s-devops-yamls.yml
+#    - task: update-gitops
+#      file: ci-repo/ci/tasks/update-gitops.yml
 #    - put: devops-repo
 #      params: {repository: devops-repo-modified}

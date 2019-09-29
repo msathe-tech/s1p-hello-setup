@@ -8,17 +8,14 @@ image_resource:
     tag: latest
 
 inputs:
-- name: code-repo
-- name: ci-repo
-- name: ci-cloud-pipelines
-- name: maven-repo
+  - name: code-repo
+  - name: ci-repo
+  - name: devops-repo
 
 outputs:
-  - name: code-repo
-  - name: maven-repo
+  - name: devops-repo-modified
 
 run:
   path: ci-repo/ci/tasks/init-env.sh
   args:
-    - ci-repo/ci/tasks/build-producer-with-db.sh
-
+    - ci-repo/ci/tasks/update-gitops.sh
