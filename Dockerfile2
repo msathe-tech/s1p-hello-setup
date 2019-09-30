@@ -1,0 +1,3 @@
+FROM openjdk:8-jre-alpine
+COPY target/fortune-service-3243423.jar /app.jar
+CMD ["/usr/bin/java", "-jar", "/app.jar"]

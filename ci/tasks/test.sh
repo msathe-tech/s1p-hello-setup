@@ -44,7 +44,10 @@ echo -e "\n\n########## Package ##########"
 #git checkout "${GIT_COMMIT_SHA}"
 fnPackage
 
-echo -e "\n\n########## Set image tags ##########"
+echo -e "\n\n########## Update Dockerfile and Docker Tag Files ##########"
+cp Dockerfile Dockerfile-template
+cat Dockerfile-template | sed "s/^COPY.*$/COPY target\/${PROJECT_NAME}-${GENERATED_VERSION}.jar \/app.jar/g" > Dockerfile
+
 echo "${GIT_COMMIT_SHA}" > DockerTagfile
 echo "${GENERATED_VERSION}" > DockerAdditionalTagsfile
 echo -e "DockerTagfile: $(cat DockerTagfile)"
