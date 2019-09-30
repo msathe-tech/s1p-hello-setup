@@ -84,7 +84,7 @@ jobs:
     - get: gitops-repo
     - get: ci-repo
       passed:
-      - test
+      - test-build-publish
       trigger: true
     - task: update-gitops
       file: ci-repo/ci/tasks/update-gitops.yml
