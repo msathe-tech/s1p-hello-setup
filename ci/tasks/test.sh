@@ -45,13 +45,15 @@ echo -e "\n\n########## Package ##########"
 fnPackage
 
 echo -e "\n\n########## Update Dockerfile and Docker Tag Files ##########"
-cp Dockerfile Dockerfile-template
+cd ${WORKSPACE}
+git clone code-repo code-repo-modified
+cd code-repo-modified
+mv Dockerfile Dockerfile-template
 cat Dockerfile-template | sed "s/^COPY.*$/COPY target\/${PROJECT_NAME}-${GENERATED_VERSION}.jar \/app.jar/g" > Dockerfile
-
 #echo "${GIT_COMMIT_SHA}" > DockerTagfile
-echo "${GIT_COMMIT_SHA} ${GENERATED_VERSION}" > DockerAdditionalTagsfile
+echo "${GENERATED_VERSION} ${GIT_COMMIT_SHA}" > Dockertags
 #echo -e "DockerTagfile: $(cat DockerTagfile)"
-echo -e "DockerAdditionalTagsfile: $(cat DockerAdditionalTagsfile)"
+echo -e "Dockertags: $(cat Dockertags)"
 
 echo -e "\n\n########## Summary ##########"
 echo "source=${GIT_URL}" > ci-summary.properties

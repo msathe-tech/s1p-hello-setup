@@ -7,11 +7,11 @@ image_resource:
     repository: vito/oci-build-task
     tag: latest
 
-#params:
-#  CONTEXT: code-repo
+params:
+  CONTEXT: code-repo-modified
 
 inputs:
-  - name: code-repo
+  - name: code-repo-modified
     path: .
 
 outputs:

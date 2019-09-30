@@ -13,11 +13,12 @@ inputs:
   - name: stubs-repo
 
 outputs:
-  - name: code-repo
+  - name: code-repo-modified
   - name: stubs-repo-modified
 
 caches:
-  - path: .m2/
+#  - path: /root/.m2
+  - path: $HOME/.m2
 
 run:
   path: ci-repo/ci/tasks/init-env.sh

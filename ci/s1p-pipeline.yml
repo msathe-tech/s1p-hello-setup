@@ -67,7 +67,7 @@ jobs:
   - put: image-registry
     params:
       image: image/image.tar
-      additional_tags: code-repo/DockerAdditionalTagsfile
+      additional_tags: code-repo-modified/Dockertags
 #  - put: image-registry
 #    params:
 #      build: code-repo
