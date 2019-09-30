@@ -46,12 +46,23 @@ function fnExecuteDatabaseCompatibilityCheck() {
 # FUNCTION: fnStageStubCompatibilityCheck {{{
 # Staging stub compatibility check
 # Requires separate function to execute
-function fnStageStubompatibilityCheck() {
-	export STUBS="${1}"
-	echo -e "\n\n##### Staging for test with stub: ${STUBS}\n";
-  # Copy stubs to local maven repo
+function fnStageStubCompatibilityCheck() {
+	local stub="${1}"
+	echo -e "\n\n##### Staging for test with stub: ${stub}\n";
+  fnInstallStubToLocalMavenRepo "${stub}"
+  export STUBS="${stub}"
+	echo "Test will run on next package/build"
+	# Test will be executed during package or build
+	# fnRunDefaultTests
+} # }}}
+
+# FUNCTION: fnInstallStubsToLocalMavenRepo {{{
+# Installs stub from stubs-repo to local maven repo
+function fnInstallStubToLocalMavenRepo() {
+	local stub="${1}"
+	echo -e "\n\n##### Installing stub to local maven repo: ${stub}\n";
 	IFS=":"
-  stubCoordinates=($STUBS)
+  stubCoordinates=(stub)
   groupDir=`echo "${stubCoordinates[0]}" | sed "s/\./\//g"`
   artifactDir="${stubCoordinates[1]}"
   versionDir="${stubCoordinates[2]}"
@@ -59,7 +70,4 @@ function fnStageStubompatibilityCheck() {
   cp "${WORKSPACE}/stubs-repo/${groupDir}/${artifactDir}/maven-metadata-*" "~/.m2/repository/${groupDir}/${artifactDir}"
   cp "${WORKSPACE}/stubs-repo/${groupDir}/${artifactDir}/${versionDir}/*" "~/.m2/repository/${groupDir}/${artifactDir}/${versionDir}"
   unset IFS
-	echo "Test will run on next package/build"
-	# Test will be executed during package or build
-	# fnRunDefaultTests
 } # }}}

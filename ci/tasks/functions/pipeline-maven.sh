@@ -48,6 +48,8 @@ function fnExtractMavenProperty() {
 # Maven implementation of executing API compatibility check
 function fnExecuteApiCompatibilityCheck() {
 	local prodVersion="${1}"
+	local stub="${PROJECT_GROUP}:${PROJECT_NAME}:${prodVersion}"
+	fnInstallStubToLocalMavenRepo "${stub}"
 	# shellcheck disable=SC2086
 	./mvnw clean verify -Papicompatibility -Dprod.version="${prodVersion}" ${BUILD_OPTIONS} || (printTestResults && return 1)
 } # }}}
