@@ -66,8 +66,8 @@ function fnInstallStubToLocalMavenRepo() {
   groupDir=`echo "${stubCoordinates[0]}" | sed "s/\./\//g"`
   artifactDir="${stubCoordinates[1]}"
   versionDir="${stubCoordinates[2]}"
-  mkdir -p "~/.m2/repository/${groupDir}/${artifactDir}/${versionDir}"
-  cp "${WORKSPACE}/stubs-repo/${groupDir}/${artifactDir}/maven-metadata-*" "~/.m2/repository/${groupDir}/${artifactDir}"
-  cp "${WORKSPACE}/stubs-repo/${groupDir}/${artifactDir}/${versionDir}/*" "~/.m2/repository/${groupDir}/${artifactDir}/${versionDir}"
+  mkdir -p "${HOME}/.m2/repository/${groupDir}/${artifactDir}/${versionDir}"
+  cp "${WORKSPACE}/stubs-repo/${groupDir}/${artifactDir}/maven-metadata-"* "${HOME}/.m2/repository/${groupDir}/${artifactDir}"
+  cp "${WORKSPACE}/stubs-repo/${groupDir}/${artifactDir}/${versionDir}/*" "${HOME}/.m2/repository/${groupDir}/${artifactDir}/${versionDir}"
   unset IFS
 } # }}}
