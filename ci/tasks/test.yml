@@ -19,5 +19,5 @@ outputs:
 run:
   path: ci-repo/ci/tasks/init-env.sh
   args:
-    - ci-repo/ci/tasks/test-producer.sh
+    - ci-repo/ci/tasks/test.sh
 
