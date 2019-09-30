@@ -45,9 +45,9 @@ echo -e "\n\n########## Package ##########"
 fnPackage
 
 echo -e "\n\n########## Update Dockerfile and Docker Tag Files ##########"
-cd ${WORKSPACE}
-git clone code-repo code-repo-modified
-cd code-repo-modified
+#cd ${WORKSPACE}
+#git clone code-repo code-repo-modified
+#cd code-repo-modified
 mv Dockerfile Dockerfile-template
 cat Dockerfile-template | sed "s/^COPY.*$/COPY target\/${PROJECT_NAME}-${GENERATED_VERSION}.jar \/app.jar/g" > Dockerfile
 echo "${GENERATED_VERSION}" > DockerTagfile
