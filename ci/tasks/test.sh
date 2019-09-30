@@ -39,14 +39,16 @@ else
 fi
 
 echo -e "\n\n########## Package ##########"
-git reset --hard "${GIT_COMMIT_SHA}"
-git clean -f -d
-git checkout "${GIT_COMMIT_SHA}"
+#git reset --hard "${GIT_COMMIT_SHA}"
+#git clean -f -d
+#git checkout "${GIT_COMMIT_SHA}"
 fnPackage
 
 echo -e "\n\n########## Set image tags ##########"
 echo "${GIT_COMMIT_SHA}" > DockerTagfile
 echo "${GENERATED_VERSION}" > DockerAdditionalTagsfile
+echo -e "DockerTagfile: $(cat DockerTagfile)"
+echo -e "DockerTagfile: $(cat DockerAdditionalTagsfile)"
 
 echo -e "\n\n########## Summary ##########"
 echo "source=${GIT_URL}" > ci-summary.properties
