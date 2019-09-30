@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo -e "\n\n########## Set Up Environment ##########"
-export WORKSPACE=`pwd`
+export WORKSPACE="$(pwd)"
 export BUILD_OPTIONS="-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
 
 cd "${WORKSPACE}/code-repo"
@@ -14,7 +14,7 @@ echo -e "\n\n########## Get Project Info ##########"
 export PROJECT_GROUP="$(fnRetrieveGroupId)"
 export PROJECT_NAME="$(fnRetrieveAppName)"
 export PROJECT_VERSION="$(fnRetrieveAppVersion)"
-export GIT_URL=`git config --get remote.origin.url`
+export GIT_URL="$(git config --get remote.origin.url)"
 gitCommitTime="$(git show --no-patch --no-notes --pretty='%ct')"
 export GIT_COMMIT_TIME="$(date -d @${gitCommitTime} +'%Y%m%d.%H%M%SZ')"
 export GIT_COMMIT_SHA="$(git rev-parse --short HEAD)"
