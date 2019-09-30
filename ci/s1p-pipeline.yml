@@ -1,11 +1,4 @@
 ---
-#resource_types:
-#- name: registry-image
-#  type: docker-image
-#  source:
-#    repository: concourse/registry-image-resource
-#    tag: latest
-
 resources:
 - name: code-repo
   type: git
@@ -33,17 +26,10 @@ resources:
     uri: ((ci-repo-uri))
     branch: ((ci-repo-branch))
 
-#- name: image-registry
-#  type: docker-image
-#  source:
-#    email: ((docker-hub-email))
-#    username: ((docker-hub-username))
-#    password: ((docker-hub-password))
-#    repository: ((docker-hub-username))/((project-name))
-
 - name: image-registry
-  type: registry-image
+  type: docker-image
   source:
+    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-hub-username))/((project-name))
@@ -58,26 +44,15 @@ jobs:
       trigger: true
     - get: ci-repo
     - get: stubs-repo
-
   - task: test
     file: ci-repo/ci/tasks/test.yml
-
-  - task: build-image
-    privileged: true
-    file: ci-repo/ci/tasks/build-image.yml
-
   - put: stubs-repo
     params: {repository: stubs-repo-modified}
   - put: image-registry
     params:
-      image: image/image.tar
-      additional_tags: code-repo-modified/Dockertags
-#  - put: image-registry
-#    params:
-#      build: code-repo
-#      tag_file: code-repo/DockerTagfile
-#      additional_tags: code-repo/DockerAdditionalTagsfile
-
+      build: code-repo-modified
+      tag_file: code-repo-modified/DockerTagfile
+      additional_tags: code-repo-modified/DockerTagsAdditionalfile
 
 - name: update-gitops
 #  public: false

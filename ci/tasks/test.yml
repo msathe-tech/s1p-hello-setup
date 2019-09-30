@@ -17,8 +17,7 @@ outputs:
   - name: stubs-repo-modified
 
 caches:
-  - path: /root/.m2
-#  - path: $HOME/.m2
+  - path: .m2
 
 run:
   path: ci-repo/ci/tasks/init-env.sh

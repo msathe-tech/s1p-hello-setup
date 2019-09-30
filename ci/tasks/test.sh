@@ -50,10 +50,10 @@ git clone code-repo code-repo-modified
 cd code-repo-modified
 mv Dockerfile Dockerfile-template
 cat Dockerfile-template | sed "s/^COPY.*$/COPY target\/${PROJECT_NAME}-${GENERATED_VERSION}.jar \/app.jar/g" > Dockerfile
-#echo "${GIT_COMMIT_SHA}" > DockerTagfile
-echo "${GENERATED_VERSION} ${GIT_COMMIT_SHA}" > Dockertags
-#echo -e "DockerTagfile: $(cat DockerTagfile)"
-echo -e "Dockertags: $(cat Dockertags)"
+echo "${GENERATED_VERSION} " > DockerTagfile
+echo "${GIT_COMMIT_SHA}" > DockerTagsAdditionalfile
+echo -e "DockerTagfile: $(cat DockerTagfile)"
+echo -e "DockerTagsAdditionalfile: $(cat DockerTagsAdditionalfile)"
 
 echo -e "\n\n########## Summary ##########"
 echo "source=${GIT_URL}" > ci-summary.properties
