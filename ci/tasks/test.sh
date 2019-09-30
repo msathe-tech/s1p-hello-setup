@@ -48,9 +48,9 @@ echo -e "\n\n########## Update Dockerfile and Docker Tag Files ##########"
 cp Dockerfile Dockerfile-template
 cat Dockerfile-template | sed "s/^COPY.*$/COPY target\/${PROJECT_NAME}-${GENERATED_VERSION}.jar \/app.jar/g" > Dockerfile
 
-echo "${GIT_COMMIT_SHA}" > DockerTagfile
-echo "${GENERATED_VERSION}" > DockerAdditionalTagsfile
-echo -e "DockerTagfile: $(cat DockerTagfile)"
+#echo "${GIT_COMMIT_SHA}" > DockerTagfile
+echo "${GIT_COMMIT_SHA} ${GENERATED_VERSION}" > DockerAdditionalTagsfile
+#echo -e "DockerTagfile: $(cat DockerTagfile)"
 echo -e "DockerAdditionalTagsfile: $(cat DockerAdditionalTagsfile)"
 
 echo -e "\n\n########## Summary ##########"

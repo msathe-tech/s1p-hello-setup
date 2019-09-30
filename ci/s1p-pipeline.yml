@@ -1,5 +1,11 @@
 ---
-resource_types:
+#resource_types:
+#- name: registry-image
+#  type: docker-image
+#  source:
+#    repository: concourse/registry-image-resource
+#    tag: latest
+
 resources:
 - name: code-repo
   type: git
@@ -27,13 +33,20 @@ resources:
     uri: ((ci-repo-uri))
     branch: ((ci-repo-branch))
 
-- name: app-docker-image
-  type: docker-image
+#- name: image-registry
+#  type: docker-image
+#  source:
+#    email: ((docker-hub-email))
+#    username: ((docker-hub-username))
+#    password: ((docker-hub-password))
+#    repository: ((docker-hub-username))/((project-name))
+
+- name: image-registry
+  type: registry-image
   source:
-    email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
-    repository: ((docker-hub-username))/((project-name))
+    repository: ((docker-hub-repository))
 
 jobs:
 - name: test
@@ -46,13 +59,20 @@ jobs:
   - get: stubs-repo
   - task: test
     file: ci-repo/ci/tasks/test.yml
+  - task: build-oci-image
+    file: ci-repo/ci/tasks/build-image.yml
   - put: stubs-repo
     params: {repository: stubs-repo-modified}
-  - put: app-docker-image
+  - put: image-registry
     params:
-      build: code-repo
-      tag_file: code-repo/DockerTagfile
+      image: image/image.tar
       additional_tags: code-repo/DockerAdditionalTagsfile
+#  - put: image-registry
+#    params:
+#      build: code-repo
+#      tag_file: code-repo/DockerTagfile
+#      additional_tags: code-repo/DockerAdditionalTagsfile
+
 
 - name: update-gitops
 #  public: false

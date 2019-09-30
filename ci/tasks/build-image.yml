@@ -1,0 +1,16 @@
+---
+platform: linux
+
+image_resource:
+  repository: vito/oci-build-task
+#  type: docker-image
+#  source:
+#    repository: vito/oci-build-task
+#    tag: latest
+
+inputs:
+  - name: code-repo
+    path: .
+
+outputs:
+  - name: image
