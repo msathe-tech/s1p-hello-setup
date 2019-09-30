@@ -15,14 +15,14 @@ stubProviderProdUrl=
 
 # Get info for compatibility testing
 if [[ ! -z "${prodUrl}" ]]; then
-  echo "Getting version from ${prodUrl}"
+  echo -e "\nGetting version from ${prodUrl}"
   prodVersion=`curl ${prodUrl} | jq '.app["version"]'`
   echo "Getting git-sha from ${prodUrl}"
   prodSha=`curl ${prodUrl} | jq '.app["git-sha"]'`
 fi
 
 if [[ ! -z "${stubProviderProdUrl}" ]]; then
-  echo "Getting stub-coordinates from ${stubProviderProdUrl}"
+  echo -e "\nGetting stub-coordinates from ${stubProviderProdUrl}"
   stubProviderProdCoordinates=`curl ${stubProviderProdUrl} | jq '.app["stub-coordinates"]'`
 fi
 
@@ -35,7 +35,7 @@ export STUB_FOR_API_CONSUMER_TEST="${stubProviderProdCoordinates}"
 BASELINE_VERSION_FOR_CANARY_DEPLOY="${prodVersion}"
 BASELINE_SHA_FOR_CANARY_DEPLOY="${prodSha}"
 
-echo ""
+echo "App-driven configuration of CI:"
 echo "PROD_VERSION_FOR_API_PRODUCER_TEST=${PROD_VERSION_FOR_API_PRODUCER_TEST}"
 echo "PROD_SHA_FOR_DB_TEST=${PROD_SHA_FOR_DB_TEST}"
 echo "STUB_FOR_API_CONSUMER_TEST=${STUB_FOR_API_CONSUMER_TEST}"

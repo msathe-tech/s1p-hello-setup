@@ -8,9 +8,9 @@ set -o errexit
 # See ci/config/config-template.sh for suggestions on providing variable value
 
 cd "${WORKSPACE}"
-echo "Cloning devops-repo"
-git clone devops-repo devops-repo-modified
-cd devops-repo-modified
+echo "Cloning gitops-repo"
+git clone gitops-repo gitops-repo-modified
+cd gitops-repo-modified
 
 echo "Setting baseline, canary, and prod tags"
 #baselineTag="${BASELINE_SHA_FOR_CANARY_DEPLOY}"

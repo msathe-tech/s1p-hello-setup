@@ -10,10 +10,10 @@ image_resource:
 inputs:
   - name: code-repo
   - name: ci-repo
-  - name: devops-repo
+  - name: gitops-repo
 
 outputs:
-  - name: devops-repo-modified
+  - name: gitops-repo-modified
 
 run:
   path: ci-repo/ci/tasks/init-env.sh

@@ -14,11 +14,11 @@ resources:
     branch: ((maven-repo-branch))
     private_key: ((github-private-key))
 
-- name: devops-repo
+- name: gitops-repo
   type: git
   source:
-    uri: ((devops-repo-uri))
-    branch: ((devops-repo-branch))
+    uri: ((gitops-repo-uri))
+    branch: ((gitops-repo-branch))
     private_key: ((github-private-key))
 
 - name: ci-repo
@@ -60,12 +60,12 @@ jobs:
   plan:
     # Update image tag in deployment yamls
     - get: code-repo
-    - get: devops-repo
+    - get: gitops-repo
     - get: ci-repo
       passed:
       - test
       trigger: true
     - task: update-gitops
       file: ci-repo/ci/tasks/update-gitops.yml
-    - put: devops-repo
-      params: {repository: devops-repo-modified}
+    - put: gitops-repo
+      params: {repository: gitops-repo-modified}
