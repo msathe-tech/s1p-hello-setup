@@ -46,10 +46,10 @@ resources:
   source:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
-    repository: ((docker-hub-repository))
+    repository: ((docker-hub-username))/((project-name))
 
 jobs:
-- name: test
+- name: test-build-publish
   public: true
   serial: true
   plan:
