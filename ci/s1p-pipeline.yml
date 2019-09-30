@@ -46,8 +46,6 @@ jobs:
     - get: stubs-repo
   - task: test
     file: ci-repo/ci/tasks/test.yml
-    params:
-      DOCKER_TAG_PREFIX: ((docker-hub-username))/((project-name))
   - put: stubs-repo
     params: {repository: stubs-repo-modified}
   - put: image-registry

@@ -16,9 +16,6 @@ outputs:
   - name: code-repo-modified
   - name: stubs-repo-modified
 
-caches:
-  - path: .m2
-
 run:
   path: ci-repo/ci/tasks/init-env.sh
   args:
