@@ -13,9 +13,9 @@ function fnGenerateVersion() {
 	  echo "${version}"
 	else
 	  local version="$(fnExtractMavenProperty "project.version")"
-		local commitTime="$(${GIT_BIN} show --no-patch --no-notes --pretty='%ct')"
+		local commitTime="$(git show --no-patch --no-notes --pretty='%ct')"
 		commitTime="$(date -d @${commitTime} +'%Y%m%d.%H%M%SZ')"
-		local commitIdShort="$(${GIT_BIN} rev-parse --short HEAD)"
+		local commitIdShort="$(git rev-parse --short HEAD)"
 		#local version="${version}+${commitTime}.${commitIdShort}"
 		local version="${version}-${commitTime}.${commitIdShort}"
 		echo "${version}"

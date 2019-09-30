@@ -63,7 +63,6 @@ function fnRunDefaultTests() {
 # FUNCTION: fnPackage {{{
 # Maven implementation of fnPackage. Sets version, passes build options, runs default tests.
 # Also stages stubs jar for upload (does not do upload).
-# Uses [PIPELINE_VERSION], [GENERATED_VERSION] and [M2_SETTINGS...], [REPO_WITH_BINARIES...] related env vars
 function fnPackage() {
   echo "Running fnPackage."
 	local pipelineVersion="${GENERATED_VERSION:-${PIPELINE_VERSION:-}}"
