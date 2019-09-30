@@ -49,7 +49,7 @@ function fnExtractMavenProperty() {
 function fnExecuteApiCompatibilityCheck() {
 	local prodVersion="${1}"
 	# shellcheck disable=SC2086
-	./mvnw clean verify -Papicompatibility -Dprod.version="${prodVersion}" -Drepo.with.binaries="${WORKSPACE}/maven-repo" ${BUILD_OPTIONS} || (printTestResults && return 1)
+	./mvnw clean verify -Papicompatibility -Dprod.version="${prodVersion}" ${BUILD_OPTIONS} || (printTestResults && return 1)
 } # }}}
 
 # FUNCTION: fnRunDefaultTests {{{
@@ -57,7 +57,7 @@ function fnExecuteApiCompatibilityCheck() {
 function fnRunDefaultTests() {
 	echo "Running default tests."
 	# shellcheck disable=SC2086
-	./mvnw clean test -Pdefault -Drepo.with.binaries="${WORKSPACE}/maven-repo" ${BUILD_OPTIONS} || (printTestResults && return 1)
+	./mvnw clean test -Pdefault ${BUILD_OPTIONS} || (printTestResults && return 1)
 } # }}}
 
 # FUNCTION: fnPackage {{{
