@@ -6,8 +6,8 @@ export BUILD_OPTIONS="-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer
 
 cd "${WORKSPACE}/code-repo"
 
-source "${WORKSPACE}"/ci-repo/tasks/functions/pipeline-common.sh
-source "${WORKSPACE}"/ci-repo/tasks/functions/pipeline-maven.sh
+source "${WORKSPACE}"/ci-repo/ci/tasks/functions/pipeline-common.sh
+source "${WORKSPACE}"/ci-repo/ci/tasks/functions/pipeline-maven.sh
 source "${WORKSPACE}"/code-repo/ci/config.sh
 
 echo -e "\n\n########## Get Project Info ##########"

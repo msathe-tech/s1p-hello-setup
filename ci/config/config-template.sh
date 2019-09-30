@@ -5,15 +5,23 @@
 # Comment out exports to disable specific tests.
 # You can obtain the necessary coordinates & shas any way that works - this example
 # assumes ${prodUrl} and ${stubProviderProdUrl} provide the necessary info.
+# Examples:
+# prodUrl="http://my-app.example.com/actuator/info"
+# stubProviderProdUrl="http://provider-app.example.com/actuator/info"
 
 ########## Configure CI pipeline options #####
+prodUrl=
+stubProviderProdUrl=
 
 # Get info for compatibility testing
-prodUrl="http://my-app.example.com/actuator/info"
-prodVersion=`curl ${prodUrl} | jq '.app["version"]'`
-prodSha=`curl ${prodUrl} | jq '.app["git-sha"]'`
-stubProviderProdUrl="http://provider-app.example.com/actuator/info"
-stubProviderProdCoordinates=`curl ${stubProviderProdUrl} | jq '.app["stub-coordinates"]'`
+if [[ ! -z "${prodUrl}" ]]; then
+  prodVersion=`curl ${prodUrl} | jq '.app["version"]'`
+  prodSha=`curl ${prodUrl} | jq '.app["git-sha"]'`
+fi
+
+if [[ ! -z "${stubProviderProdUrl}" ]]; then
+  stubProviderProdCoordinates=`curl ${stubProviderProdUrl} | jq '.app["stub-coordinates"]'`
+fi
 
 # Comment out variables to disable tests
 export PROD_VERSION_FOR_API_PRODUCER_TEST="${prodVersion}"
