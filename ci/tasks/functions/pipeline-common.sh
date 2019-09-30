@@ -56,8 +56,8 @@ function fnStageStubompatibilityCheck() {
   artifactDir="${stubCoordinates[1]}"
   versionDir="${stubCoordinates[2]}"
   mkdir -p "~/.m2/repository/${groupDir}/${artifactDir}/${versionDir}"
-  cp "${WORKSPACE}/maven-repo/${groupDir}/${artifactDir}/maven-metadata-*" "~/.m2/repository/${groupDir}/${artifactDir}"
-  cp "${WORKSPACE}/maven-repo/${groupDir}/${artifactDir}/${versionDir}/*" "~/.m2/repository/${groupDir}/${artifactDir}/${versionDir}"
+  cp "${WORKSPACE}/stubs-repo/${groupDir}/${artifactDir}/maven-metadata-*" "~/.m2/repository/${groupDir}/${artifactDir}"
+  cp "${WORKSPACE}/stubs-repo/${groupDir}/${artifactDir}/${versionDir}/*" "~/.m2/repository/${groupDir}/${artifactDir}/${versionDir}"
   unset IFS
 	echo "Test will run on next package/build"
 	# Test will be executed during package or build

@@ -10,11 +10,11 @@ image_resource:
 inputs:
 - name: code-repo
 - name: ci-repo
-- name: maven-repo
+- name: stubs-repo
 
 outputs:
   - name: code-repo
-  - name: maven-repo
+  - name: stubs-repo
 
 run:
   path: ci-repo/ci/tasks/init-env.sh

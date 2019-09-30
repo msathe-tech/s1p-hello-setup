@@ -8,5 +8,5 @@ docker-hub-username: msathepivotal
 # (github-private-key is set through fly-set-pipeline command)
 
 # Change this to common artifacts-only repo, master branch
-maven-repo-uri: git@github.com:ciberkleid/artifacts.git
-maven-repo-branch: master
+stubs-repo-uri: git@github.com:ciberkleid/artifacts.git
+stubs-repo-branch: master

@@ -7,11 +7,11 @@ resources:
     uri: ((code-repo-uri))
     branch: ((code-repo-branch))
 
-- name: maven-repo
+- name: stubs-repo
   type: git
   source:
-    uri: ((maven-repo-uri))
-    branch: ((maven-repo-branch))
+    uri: ((stubs-repo-uri))
+    branch: ((stubs-repo-branch))
     private_key: ((github-private-key))
 
 - name: gitops-repo
@@ -43,11 +43,11 @@ jobs:
   - get: code-repo
     trigger: true
   - get: ci-repo
-  - get: maven-repo
+  - get: stubs-repo
   - task: test
     file: ci-repo/ci/tasks/test.yml
-  - put: maven-repo
-    params: {repository: maven-repo}
+  - put: stubs-repo
+    params: {repository: stubs-repo}
   - put: app-docker-image
     params:
       build: code-repo
