@@ -65,17 +65,16 @@ function fnRunDefaultTests() {
 # Also stages stubs jar for upload (does not do upload).
 function fnPackage() {
   echo "Running fnPackage."
-	local pipelineVersion="${GENERATED_VERSION:-${PIPELINE_VERSION:-}}"
 	# shellcheck disable=SC2086
-	./mvnw versions:set -DnewVersion="${pipelineVersion}" -DprocessAllModules ${BUILD_OPTIONS} || (echo "Package failed!!!" && return 1)
+	./mvnw versions:set -DnewVersion="${GENERATED_VERSION}" -DprocessAllModules ${BUILD_OPTIONS} || (echo "Package failed!!!" && return 1)
   # shellcheck disable=SC2086
   ./mvnw clean package || (printTestResults && return 1)
-  stubsJar="${WORKSPACE}/code-repo/target/${PROJECT_NAME}-${pipelineVersion}-stubs.jar"
+  stubsJar="${WORKSPACE}/code-repo/target/${PROJECT_NAME}-${GENERATED_VERSION}-stubs.jar"
   if [[ -f "${stubsJar}" ]]; then
     cd "$WORKSPACE/maven-repo"
-    ./mvnw install:install-file -DgroupId="${PROJECT_GROUP}" -DartifactId="${PROJECT_NAME}" -Dversion="${pipelineVersion}" -Dfile="${stubsJar}" -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=. -DcreateChecksum=true -Dclassifier=stubs || (echo "Install failed!!!" && return 1)
+    ./mvnw install:install-file -DgroupId="${PROJECT_GROUP}" -DartifactId="${PROJECT_NAME}" -Dversion="${GENERATED_VERSION}" -Dfile="${stubsJar}" -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=. -DcreateChecksum=true -Dclassifier=stubs || (echo "Install failed!!!" && return 1)
     git add .
-    git commit -m "stubs for version ${pipelineVersion}"
+    git commit -m "stubs for version ${GENERATED_VERSION}"
     # git push of stub jar is done through Concourse resource
     cd "$WORKSPACE/code-repo"
   fi

@@ -26,8 +26,7 @@ echo "GIT_COMMIT_TIME=[${GIT_COMMIT_TIME}]"
 echo "GIT_COMMIT_SHA=[${GIT_COMMIT_SHA}]"
 
 echo -e "\n\n########## Get generated version for this build (generate if undefined) ##########"
-generatedVersion=$(fnGenerateVersion)
-export GENERATED_VERSION=${GENERATED_VERSION:-generatedVersion}
+export GENERATED_VERSION=$(fnGenerateVersion)
 echo "GENERATED_VERSION=[${GENERATED_VERSION}]"
 
 git config --global user.email "s1p-concourse@no.op"

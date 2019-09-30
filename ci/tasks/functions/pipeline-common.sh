@@ -8,16 +8,15 @@ set -o pipefail
 # Generates version
 # Returns version number.
 function fnGenerateVersion() {
-  local version="${GENERATED_VERSION:-${PIPELINE_VERSION:-}}"
-	if [[ ! -z "${version}" ]]; then
-	  echo "${version}"
+	if [[ ! -z "${GENERATED_VERSION}" ]]; then
+	  echo "${GENERATED_VERSION}"
 	else
-	  local version="$(fnExtractMavenProperty "project.version")"
+	  local version="$(fnRetrieveAppVersion)"
 		local commitTime="$(git show --no-patch --no-notes --pretty='%ct')"
 		commitTime="$(date -d @${commitTime} +'%Y%m%d.%H%M%SZ')"
 		local commitIdShort="$(git rev-parse --short HEAD)"
 		#local version="${version}+${commitTime}.${commitIdShort}"
-		local version="${version}-${commitTime}.${commitIdShort}"
+		version="${version}-${commitTime}.${commitIdShort}"
 		echo "${version}"
 	fi
 } # }}}
