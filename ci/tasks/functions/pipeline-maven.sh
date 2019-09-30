@@ -73,7 +73,9 @@ function fnPackage() {
   ./mvnw clean package || (printTestResults && return 1)
   stubsJar="${WORKSPACE}/code-repo/target/${PROJECT_NAME}-${GENERATED_VERSION}-stubs.jar"
   if [[ -f "${stubsJar}" ]]; then
-    cd "$WORKSPACE/stubs-repo"
+    cd "${WORKSPACE}"
+    git clone stubs-repo stubs-repo-modified
+    cd stubs-repo-modified
     ./mvnw install:install-file -DgroupId="${PROJECT_GROUP}" -DartifactId="${PROJECT_NAME}" -Dversion="${GENERATED_VERSION}" -Dfile="${stubsJar}" -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=. -DcreateChecksum=true -Dclassifier=stubs || (echo "Install failed!!!" && return 1)
     git add .
     git commit -m "stubs for version ${GENERATED_VERSION}"

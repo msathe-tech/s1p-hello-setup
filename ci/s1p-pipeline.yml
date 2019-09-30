@@ -47,7 +47,7 @@ jobs:
   - task: test
     file: ci-repo/ci/tasks/test.yml
   - put: stubs-repo
-    params: {repository: stubs-repo}
+    params: {repository: stubs-repo-modified}
   - put: app-docker-image
     params:
       build: code-repo

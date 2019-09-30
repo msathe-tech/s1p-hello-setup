@@ -14,7 +14,7 @@ inputs:
 
 outputs:
   - name: code-repo
-  - name: stubs-repo
+  - name: stubs-repo-modified
 
 run:
   path: ci-repo/ci/tasks/init-env.sh
