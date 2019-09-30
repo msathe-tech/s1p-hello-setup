@@ -77,6 +77,13 @@ function fnPackage() {
     git clone stubs-repo stubs-repo-modified
     cd stubs-repo-modified
     ./mvnw install:install-file -DgroupId="${PROJECT_GROUP}" -DartifactId="${PROJECT_NAME}" -Dversion="${GENERATED_VERSION}" -Dfile="${stubsJar}" -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=. -DcreateChecksum=true -Dclassifier=stubs || (echo "Install failed!!!" && return 1)
+    groupDir="$(echo "${ROJECT_GROUP}" | sed "s/\./\//g")"
+    artifactDir="${PROJECT_NAME}"
+    versionDir="${GENERATED_VERSION}"
+    newStubsJar="${groupDir}/${artifactDir}/${versionDir}/${PROJECT_NAME}-${GENERATED_VERSION}-stubs.jar"
+    echo "explicitly adding new stub: ${newStubsJar}"
+    ls -ltra ${newStubsJar}
+    git add "${newStubsJar}"
     git add .
     git commit -m "stubs for version ${GENERATED_VERSION}"
     # git push of stub jar is done through Concourse resource
