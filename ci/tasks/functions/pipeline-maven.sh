@@ -92,10 +92,11 @@ function fnSetLocalMavenRepoHome() {
   mkdir -p "${M2_DEFAULT_HOME}"
   mkdir -p "${M2_CACHEABLE_HOME}/repository"
 
-  # Create custom settings.xml
-  echo "<settings xmlns=\"http://maven.apache.org/SETTINGS/1.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
-          xsi:schemaLocation=\"http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd\">
-  <localRepository>${M2_CACHEABLE_HOME}/repository</localRepository>
+  echo "# Custom settings.xml
+<settings xmlns=\"http://maven.apache.org/SETTINGS/1.0.0\"
+          xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
+          xsi:schemaLocation=\"http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd\">
+  <localRepository>${M2_CACHEABLE_HOME}/repository</localRepository>
 </settings>" > "${M2_DEFAULT_HOME}"/settings.xml
 
   #cat ${M2_DEFAULT_HOME}/settings.xml
