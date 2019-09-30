@@ -3,4 +3,3 @@ code-repo-uri: https://github.com/msathe-tech/s1p-hello-service.git
 code-repo-branch: master
 devops-repo-uri: git@github.com:msathe-tech/s1p-hello-service-devops-k8s.git
 devops-repo-branch: master
-get-prod-version-url: http://s1p-hello-service.apps.beirut.cf-app.com/actuator/info

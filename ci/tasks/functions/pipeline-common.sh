@@ -12,7 +12,7 @@ function fnGenerateVersion() {
 	if [[ ! -z "${version}" ]]; then
 	  echo "${version}"
 	else
-	  local version="$(extractMavenProperty "project.version")"
+	  local version="$(fnExtractMavenProperty "project.version")"
 		local commitTime="$(${GIT_BIN} show --no-patch --no-notes --pretty='%ct')"
 		commitTime="$(date -d @${commitTime} +'%Y%m%d.%H%M%SZ')"
 		local commitIdShort="$(${GIT_BIN} rev-parse --short HEAD)"
@@ -22,43 +22,45 @@ function fnGenerateVersion() {
 	fi
 } # }}}
 
-# FUNCTION: findLatestProdTags {{{
-# Echoes the latest N prod tags from git with trimmed refs part. Uses the
-# LATEST_PROD_TAGS and PASSED_LATEST_PROD_TAGS env vars if latest production tags
-# were already found. If not, retrieves the latest prod tags via [latestProdTagsFromGit]
-# function and sets the [PASSED_LATEST_PROD_TAGS] and [LATEST_PROD_TAGS] env vars with
-# the trimmed prod tags. Trimming occurs via the [trimRefsTag] function
-function findLatestProdTags() {
-	local prodTags="${PASSED_LATEST_PROD_TAGS:-${LATEST_PROD_TAGS:-}}"
-	if [[ ! -z "${prodTags}" ]]; then
-		echo "${prodTags}"
-	else
-		local latestProdTags
-		latestProdTags="$(latestProdTagsFromGit)"
-		i=0
-		for tag in ${latestProdTags[@]}
-		do
-		  latestProdTags[$i]="$(trimRefsTag "${tag}")"
-		  i=$((i + 1))
-		done
-		export LATEST_PROD_TAGS PASSED_LATEST_PROD_TAGS
-		LATEST_PROD_TAGS="${latestProdTags[@]}"
-		PASSED_LATEST_PROD_TAGS="${LATEST_PROD_TAGS[@]}"
-		echo "${LATEST_PROD_TAGS[@]}"
-	fi
-} # }}}
-
-# FUNCTION: latestProdTagsFromGit {{{
-# Echos latest N production tags from git
-# Uses [BACK_COMPATIBILITY_DEPTH, PROJECT_NAME] to determine number of tags to retrieve
-function latestProdTagsFromGit() {
-	if [[ -z "${PROJECT_NAME}" ]]; then
-		export PROJECT_NAME="$(extractMavenProperty "project.artifactId")"
-	fi
-	local latestProdTags=$("${GIT_BIN}" for-each-ref --sort=-taggerdate --format '%(refname)' "refs/tags/prod/${PROJECT_NAME}" | head -${BACK_COMPATIBILITY_DEPTH})
-    echo "${latestProdTags[@]}"
-} # }}}
-
 export -f fnGenerateVersion
-export -f findLatestProdTags
-export -f latestProdTagsFromGit
+
+# FUNCTION: fnExecuteDatabaseCompatibilityCheck {{{
+# Java implementation of executing database compatibility check
+function fnExecuteDatabaseCompatibilityCheck() {
+	local prodSHA="${1}"
+  echo -e "\n\n##### Testing code from prod_commit=[${prodSHA}] against current DB schema [current git_commit=${GIT_COMMIT_SHA}]\n\n\n";
+  cd "${WORKSPACE}"
+  git clone code-repo temp-code-repo
+  cd temp-code-repo
+  git checkout "${PROD_SHA_FOR_DB_TEST}"
+  # Copy db/migrations scripts from code-repo
+  rm -r src/main/resources/db/migration
+  mkdir -p src/main/resources/db
+  cp -r "${WORKSPACE}/code-repo/src/main/resources/db/migration" src/main/resources/db/migration
+  fnRunDefaultTests
+  cd ${WORKSPACE}/code-repo
+  rm -rf ${WORKSPACE}/temp-code-repo
+  # Can also try using:
+  #BUILD_OPTIONS="${BUILD_OPTIONS} -Dspring.flyway.locations=filesystem:${WORKSPACE}/code-repo/src/main/resources/db/migration"
+} # }}}
+
+# FUNCTION: fnStageStubCompatibilityCheck {{{
+# Staging stub compatibility check
+# Requires separate function to execute
+function fnStageStubompatibilityCheck() {
+	export STUBS="${1}"
+	echo -e "\n\n##### Staging for test with stub: ${STUBS}\n";
+  # Copy stubs to local maven repo
+	IFS=":"
+  stubCoordinates=($STUBS)
+  groupDir=`echo "${stubCoordinates[0]}" | sed "s/\./\//g"`
+  artifactDir="${stubCoordinates[1]}"
+  versionDir="${stubCoordinates[2]}"
+  mkdir -p "~/.m2/repository/${groupDir}/${artifactDir}/${versionDir}"
+  cp "${WORKSPACE}/maven-repo/${groupDir}/${artifactDir}/maven-metadata-*" "~/.m2/repository/${groupDir}/${artifactDir}"
+  cp "${WORKSPACE}/maven-repo/${groupDir}/${artifactDir}/${versionDir}/*" "~/.m2/repository/${groupDir}/${artifactDir}/${versionDir}"
+  unset IFS
+	echo "Test will run on next package/build"
+	# Test will be executed during package or build
+	# fnRunDefaultTests
+} # }}}

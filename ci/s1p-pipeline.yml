@@ -14,12 +14,12 @@ resources:
     branch: ((maven-repo-branch))
     private_key: ((github-private-key))
 
-#- name: devops-repo
-#  type: git
-#  source:
-#    uri: ((devops-repo-uri))
-#    branch: ((devops-repo-branch))
-#    private_key: ((github-private-key))
+- name: devops-repo
+  type: git
+  source:
+    uri: ((devops-repo-uri))
+    branch: ((devops-repo-branch))
+    private_key: ((github-private-key))
 
 - name: ci-repo
   type: git
@@ -27,13 +27,13 @@ resources:
     uri: ((ci-repo-uri))
     branch: ((ci-repo-branch))
 
-#- name: app-docker-image
-#  type: docker-image
-#  source:
-#    email: ((docker-hub-email))
-#    username: ((docker-hub-username))
-#    password: ((docker-hub-password))
-#    repository: ((docker-hub-username))/((project-name))
+- name: app-docker-image
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-hub-username))/((project-name))
 
 jobs:
 - name: test
@@ -45,25 +45,27 @@ jobs:
   - get: ci-repo
   - get: maven-repo
   - task: test
-    file: ci-repo/ci/tasks/test-producer.yml
+    file: ci-repo/ci/tasks/test.yml
   - put: maven-repo
     params: {repository: maven-repo}
-#  - put: app-docker-image
-#    params:
-#      build: code-repo
+  - put: app-docker-image
+    params:
+      build: code-repo
+      tag_file: code-repo/DockerTagfile
+      additional_tags: code-repo/DockerAdditionalTagsfile
 
-#- name: update-gitops
-##  public: false
-#  serial: true
-#  plan:
-#    # get sha from code repo and update image tag yml in devops repo
-#    - get: code-repo
-#    - get: devops-repo
-#    - get: ci-repo
-#      passed:
-#      - build-and-publish
-#      trigger: true
-#    - task: update-gitops
-#      file: ci-repo/ci/tasks/update-gitops.yml
-#    - put: devops-repo
-#      params: {repository: devops-repo-modified}
+- name: update-gitops
+#  public: false
+  serial: true
+  plan:
+    # Update image tag in deployment yamls
+    - get: code-repo
+    - get: devops-repo
+    - get: ci-repo
+      passed:
+      - test
+      trigger: true
+    - task: update-gitops
+      file: ci-repo/ci/tasks/update-gitops.yml
+    - put: devops-repo
+      params: {repository: devops-repo-modified}

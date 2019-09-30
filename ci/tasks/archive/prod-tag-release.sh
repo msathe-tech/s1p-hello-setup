@@ -6,7 +6,7 @@ export TAG_PREFIX="prod/${PROJECT_NAME}/"
 
 echo -e "\n\n########## Get recent release tags ##########"
 echo "Max prior tags to retrieve: [${BACK_COMPATIBILITY_DEPTH}]"
-groupId="$(extractMavenProperty "project.groupId")"
+groupId="$(fnExtractMavenProperty "project.groupId")"
 currentTag="${TAG_PREFIX}${TRIGGER_BUILD_VERSION}"
 currentCoordinates="${groupId}:${PROJECT_NAME}:${TRIGGER_BUILD_VERSION}"
 echo "${currentTag}=${currentCoordinates}" > ci-releases.properties
