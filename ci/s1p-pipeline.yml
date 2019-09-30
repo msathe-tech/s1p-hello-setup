@@ -53,13 +53,14 @@ jobs:
   public: true
   serial: true
   plan:
-  - get: code-repo
-    trigger: true
-  - get: ci-repo
-  - get: stubs-repo
+  - in_parallel:
+    - get: code-repo
+      trigger: true
+    - get: ci-repo
+    - get: stubs-repo
   - task: test
     file: ci-repo/ci/tasks/test.yml
-  - task: build-oci-image
+  - task: build-image
     file: ci-repo/ci/tasks/build-image.yml
   - put: stubs-repo
     params: {repository: stubs-repo-modified}

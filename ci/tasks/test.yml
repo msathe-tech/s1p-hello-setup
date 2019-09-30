@@ -8,16 +8,18 @@ image_resource:
     tag: latest
 
 inputs:
-- name: code-repo
-- name: ci-repo
-- name: stubs-repo
+  - name: code-repo
+  - name: ci-repo
+  - name: stubs-repo
 
 outputs:
   - name: code-repo
   - name: stubs-repo-modified
 
+caches:
+  - path: .m2/
+
 run:
   path: ci-repo/ci/tasks/init-env.sh
   args:
     - ci-repo/ci/tasks/test.sh
-
