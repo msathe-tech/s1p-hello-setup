@@ -62,7 +62,7 @@ function fnInstallStubToLocalMavenRepo() {
 	local stub="${1}"
 	echo -e "\n\n##### Installing stub to local maven repo: ${stub}\n";
 	IFS=":"
-  stubCoordinates=(stub)
+  stubCoordinates=($stub)
   groupDir=`echo "${stubCoordinates[0]}" | sed "s/\./\//g"`
   artifactDir="${stubCoordinates[1]}"
   versionDir="${stubCoordinates[2]}"
