@@ -35,7 +35,7 @@ export STUB_FOR_API_CONSUMER_TEST="${stubProviderProdCoordinates}"
 BASELINE_VERSION_FOR_CANARY_DEPLOY="${prodVersion}"
 BASELINE_SHA_FOR_CANARY_DEPLOY="${prodSha}"
 
-echo "App-driven configuration of CI:"
+echo -e "\nApp-driven configuration of CI:"
 echo "PROD_VERSION_FOR_API_PRODUCER_TEST=${PROD_VERSION_FOR_API_PRODUCER_TEST}"
 echo "PROD_SHA_FOR_DB_TEST=${PROD_SHA_FOR_DB_TEST}"
 echo "STUB_FOR_API_CONSUMER_TEST=${STUB_FOR_API_CONSUMER_TEST}"
