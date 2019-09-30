@@ -16,9 +16,9 @@ stubProviderProdUrl=
 # Get info for compatibility testing
 if [[ ! -z "${prodUrl}" ]]; then
   echo -e "\nGetting version from ${prodUrl}"
-  prodVersion="$(curl ${prodUrl} | jq '.app["version"]')"
+  prodVersion="$(curl ${prodUrl} | jq '.app["version"]' | sed 's/\"//g')"
   echo "Getting git-sha from ${prodUrl}"
-  prodSha="$(curl ${prodUrl} | jq '.app["git-sha"]')"
+  prodSha="$(curl ${prodUrl} | jq '.app["git-sha"]' | sed 's/\"//g')"
 fi
 
 if [[ ! -z "${stubProviderProdUrl}" ]]; then
