@@ -23,7 +23,7 @@ else
 fi
 
 echo -e "\n\n########## DATABASE TEST: Test database schema back compatibility ##########"
-echo "Got PROD_SHA_FOR_DB_TEST=[${PROD_SHA_FOR_DB_TEST}]"
+echo "Got PROD_SHA_FOR_DB_TEST=${PROD_SHA_FOR_DB_TEST}"
 if [[ -z "${PROD_SHA_FOR_DB_TEST}" ]]; then
   echo "Skipping test"
 else
@@ -31,7 +31,7 @@ else
 fi
 
 echo -e "\n\n########## API CONSUMER TEST: Test API compatibility with stubs ##########"
-echo "Got STUB_FOR_API_CONSUMER_TEST=[${STUB_FOR_API_CONSUMER_TEST}]"
+echo "Got STUB_FOR_API_CONSUMER_TEST=${STUB_FOR_API_CONSUMER_TEST}"
 if [[ -z "${STUB_FOR_API_CONSUMER_TEST}" ]]; then
   echo "Skipping test"
 else
