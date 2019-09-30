@@ -21,8 +21,6 @@ function fnGenerateVersion() {
 	fi
 } # }}}
 
-export -f fnGenerateVersion
-
 # FUNCTION: fnExecuteDatabaseCompatibilityCheck {{{
 # Java implementation of executing database compatibility check
 function fnExecuteDatabaseCompatibilityCheck() {

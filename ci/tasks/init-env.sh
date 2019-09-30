@@ -10,6 +10,8 @@ source "${WORKSPACE}"/ci-repo/ci/tasks/functions/pipeline-common.sh
 source "${WORKSPACE}"/ci-repo/ci/tasks/functions/pipeline-maven.sh
 source "${WORKSPACE}"/code-repo/ci/config.sh
 
+fnSetLocalMavenRepoHome
+
 echo -e "\n\n########## Get Project Info ##########"
 export PROJECT_GROUP="$(fnRetrieveGroupId)"
 export PROJECT_NAME="$(fnRetrieveAppName)"

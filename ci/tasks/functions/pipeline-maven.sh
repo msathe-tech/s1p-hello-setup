@@ -84,5 +84,23 @@ function fnPackage() {
   fi
 } # }}}
 
-export -f fnRunDefaultTests
-export -f fnPackage
+# FUNCTION: fnSetLocalMavenRepoHome {{{
+# Set maven repo home to ${WORKSPACE} to enable caching
+function fnSetLocalMavenRepoHome() {
+  M2_DEFAULT_HOME="${HOME}"/.m2
+  M2_CACHEABLE_HOME="${WORKSPACE}"/.m2
+  mkdir -p "${M2_DEFAULT_HOME}"
+  mkdir -p "${M2_CACHEABLE_HOME}/repository"
+
+  # Create custom settings.xml
+  echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <localRepository>${M2_CACHEABLE_HOME}/repository</localRepository>
+</settings>' > "${M2_DEFAULT_HOME}"/settings.xml
+
+  cat ${M2_HOME}/settings.xml
+  export MAVEN_CONFIG="-s ${M2_DEFAULT_HOME}/settings.xml ${MAVEN_CONFIG}"
+
+  echo "Local maven repo set to: ${M2_CACHEABLE_HOME}/repository"
+  echo "Enable caching using 'caches: {path: .m2/}' in task config"
+} # }}}
