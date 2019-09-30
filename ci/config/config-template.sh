@@ -22,18 +22,18 @@ if [[ ! -z "${prodUrl}" ]]; then
 fi
 
 if [[ ! -z "${stubProviderProdUrl}" ]]; then
-  echo -e "\nGetting stub-coordinates from ${stubProviderProdUrl}"
+  echo -e "\n\nGetting stub-coordinates from ${stubProviderProdUrl}"
   stubProviderProdCoordinates=`curl ${stubProviderProdUrl} | jq '.app["stub-coordinates"]'`
 fi
 
 # Comment out variables to disable tests
-export PROD_VERSION_FOR_API_PRODUCER_TEST="${prodVersion}"
-export PROD_SHA_FOR_DB_TEST="${prodSha}"
-export STUB_FOR_API_CONSUMER_TEST="${stubProviderProdCoordinates}"
+export PROD_VERSION_FOR_API_PRODUCER_TEST=${prodVersion}
+export PROD_SHA_FOR_DB_TEST=${prodSha}
+export STUB_FOR_API_CONSUMER_TEST=${stubProviderProdCoordinates}
 
 # Provide baseline info for canary deployment
-BASELINE_VERSION_FOR_CANARY_DEPLOY="${prodVersion}"
-BASELINE_SHA_FOR_CANARY_DEPLOY="${prodSha}"
+BASELINE_VERSION_FOR_CANARY_DEPLOY=${prodVersion}
+BASELINE_SHA_FOR_CANARY_DEPLOY=${prodSha}
 
 echo -e "\nApp-driven configuration of CI:"
 echo "PROD_VERSION_FOR_API_PRODUCER_TEST=${PROD_VERSION_FOR_API_PRODUCER_TEST}"
