@@ -50,9 +50,9 @@ jobs:
     params: {repository: stubs-repo-modified}
   - put: image-registry
     params:
-      build: code-repo
-      tag_file: code-repo/DockerTagfile
-      additional_tags: code-repo/DockerTagsAdditionalfile
+      build: code-repo-modified
+      tag_file: code-repo-modified/DockerTagfile
+      additional_tags: code-repo-modified/DockerTagsAdditionalfile
 
 - name: update-gitops
 #  public: false

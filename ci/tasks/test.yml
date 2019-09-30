@@ -13,7 +13,7 @@ inputs:
   - name: stubs-repo
 
 outputs:
-  - name: code-repo
+  - name: code-repo-modified
   - name: stubs-repo-modified
 
 run:
