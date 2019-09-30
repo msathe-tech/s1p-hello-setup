@@ -2,10 +2,13 @@
 platform: linux
 
 image_resource:
-  type: docker-image
+  type: registry-image
   source:
     repository: vito/oci-build-task
     tag: latest
+
+params:
+  CONTEXT: code-repo
 
 inputs:
   - name: code-repo
@@ -13,3 +16,9 @@ inputs:
 
 outputs:
   - name: image
+
+caches:
+  - path: cache
+
+run:
+  path: build
