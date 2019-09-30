@@ -45,6 +45,7 @@ echo -e "\n\n########## Package ##########"
 fnPackage
 
 echo -e "\n\n########## Update Dockerfile and Docker Tag Files ##########"
+mkdir -p "${WORKSPACE}"/code-repo-modified
 cp -r "${WORKSPACE}"/code-repo/. "${WORKSPACE}"/code-repo-modified
 cd code-repo-modified
 mv Dockerfile Dockerfile-template
